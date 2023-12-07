@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         "/leaderboard": (context) => const Leaderboard(),
         "/login": (context) => const Login()
       },
-      initialRoute: "/login",
+      initialRoute: "/",
     );
   }
 }
