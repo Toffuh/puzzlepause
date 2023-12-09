@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:puzzelpause/components/game/gridDisplay.dart';
+import 'package:puzzelpause/game/grid.dart';
+
+import '../game/tile.dart';
 
 class Game extends StatefulWidget {
   const Game({super.key});
@@ -9,42 +13,50 @@ class Game extends StatefulWidget {
 }
 
 class _GameState extends State<Game> {
-  List<String> items = ["a", "c", "b"];
-  List<String?> setItems = [null, null, null];
+  late Grid grid;
+  late List<Tile> openTiles;
+
+  @override
+  void initState() {
+    grid = Grid(10, 10);
+
+    openTiles = [Tile(Colors.red), Tile(Colors.yellow), Tile(Colors.green)];
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
+          GridDisplay(
+              grid,
+              (tile, x, y) => {
+                    setState(
+                      () {
+                        grid.setTile(x, y, tile);
+                        openTiles.remove(tile);
+                      },
+                    )
+                  }),
           Column(
             children: [
-              for (var (index, item) in setItems.indexed)
-                DragTarget<String>(
-                  builder: (BuildContext context, List<String?> candidateData,
-                      List<dynamic> rejectedData) {
-                    return SizedBox(
-                        height: 20, width: 200, child: Text(item ?? "nothing"));
-                  },
-                  onAccept: (item) {
-                    print(item);
-                    print(index);
-
-                    setState(() {
-                      setItems[index] = item;
-                    });
-                  },
-                )
-            ],
-          ),
-          Column(
-            children: [
-              for (var value in items)
-                Draggable<String>(
-                  data: value,
-                  feedback: Text(value),
-                  child: Text(value),
-                )
+              for (var value in openTiles)
+                Draggable<Tile>(
+                    data: value,
+                    feedback: SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: Container(
+                          color: value.color,
+                        )),
+                    child: SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: Container(
+                          color: value.color,
+                        )))
             ],
           ),
         ],
