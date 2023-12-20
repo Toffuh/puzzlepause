@@ -13,27 +13,19 @@ class Login extends StatelessWidget {
           children: [
             Padding(
                 padding: const EdgeInsets.all(30),
-                child: Expanded(
-                  child: Stack(
-                    children: [
-                      TextButton(
-                          onPressed: () => {},
-                          child: const Icon(Icons.arrow_back)),
-                      const Positioned(
-                        left: 0,
-                        top: 0,
-                        child: Expanded(
-                          child: Center(
-                            child: Text("PuzzlePause - Anmelden",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 30)),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                child: Stack(
+                  children: [
+                    TextButton(
+                        onPressed: () => {},
+                        child: const Icon(Icons.arrow_back)),
+                    const Center(
+                      child: Text("PuzzlePause - Anmelden",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30)),
+                    )
+                  ],
                 )),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
