@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:puzzelpause/components/game/gridDisplay.dart';
+import 'package:puzzelpause/components/game/tileDisplay.dart';
 import 'package:puzzelpause/game/grid.dart';
 
 import '../game/tile.dart';
@@ -20,7 +21,11 @@ class _GameState extends State<Game> {
   void initState() {
     grid = Grid(10, 10);
 
-    openTiles = [Tile(Colors.red), Tile(Colors.yellow), Tile(Colors.green)];
+    openTiles = [
+      Tile.pieceT(Colors.red),
+      Tile.pieceT(Colors.yellow),
+      Tile.pieceT(Colors.green)
+    ];
 
     super.initState();
   }
@@ -35,8 +40,10 @@ class _GameState extends State<Game> {
               (tile, x, y) => {
                     setState(
                       () {
-                        grid.setTile(x, y, tile);
-                        openTiles.remove(tile);
+                        for (var position in tile.relativPositions) {
+                          grid.setTile(position.x + x, position.y + y, tile);
+                          openTiles.remove(tile);
+                        }
                       },
                     )
                   }),
@@ -45,18 +52,8 @@ class _GameState extends State<Game> {
               for (var value in openTiles)
                 Draggable<Tile>(
                     data: value,
-                    feedback: SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: Container(
-                          color: value.color,
-                        )),
-                    child: SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: Container(
-                          color: value.color,
-                        )))
+                    feedback: TileDisplay(value),
+                    child: TileDisplay(value))
             ],
           ),
         ],
