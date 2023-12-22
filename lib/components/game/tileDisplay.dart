@@ -15,7 +15,7 @@ class TileDisplay extends StatelessWidget {
         children: [
           for (var positions in tile.relativPositions)
             Positioned(
-                right: (20 * positions.x).toDouble(),
+                left: (20 * positions.x).toDouble(),
                 top: (20 * positions.y).toDouble(),
                 width: 20,
                 height: 20,

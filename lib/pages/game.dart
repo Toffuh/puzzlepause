@@ -23,8 +23,8 @@ class _GameState extends State<Game> {
 
     openTiles = [
       Tile.pieceT(Colors.red),
-      Tile.pieceT(Colors.yellow),
-      Tile.pieceT(Colors.green)
+      Tile.pieceL(Colors.yellow),
+      Tile.pieceLine(Colors.green)
     ];
 
     super.initState();
