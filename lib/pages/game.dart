@@ -34,6 +34,9 @@ class _GameState extends State<Game> {
     super.initState();
   }
 
+  int offsetX = 0;
+  int offsetY = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,14 +62,25 @@ class _GameState extends State<Game> {
                         }
                       },
                     )
-                  }),
+                  },
+              offsetX,
+              offsetY),
           Column(
             children: [
               for (var value in openTiles)
                 Draggable<Tile>(
                     data: value,
                     feedback: TileDisplay(value),
-                    child: TileDisplay(value))
+                    child: Listener(
+                        onPointerDown: (details) {
+                          setState(() {
+                            offsetX = details.localPosition.dx ~/
+                                Tile.size.toDouble();
+                            offsetY = details.localPosition.dy ~/
+                                Tile.size.toDouble();
+                          });
+                        },
+                        child: TileDisplay(value)))
             ],
           ),
         ],

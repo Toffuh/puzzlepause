@@ -12,7 +12,11 @@ class GridDisplay extends StatefulWidget {
   final Grid _grid;
   final Function(Tile tile, int x, int y) _onAccept;
 
-  const GridDisplay(this._grid, this._onAccept, {super.key});
+  final int _offsetX;
+  final int _offsetY;
+
+  const GridDisplay(this._grid, this._onAccept, this._offsetX, this._offsetY,
+      {super.key});
 
   @override
   State<GridDisplay> createState() => _GridDisplayState();
@@ -29,6 +33,14 @@ class _GridDisplayState extends State<GridDisplay> {
       isUpdate = true;
       setState(() {});
     });
+  }
+
+  int getGridX(Tile tile, Position position, int x) {
+    return position.x + x - widget._offsetX - tile.minX();
+  }
+
+  int getGridY(Tile tile, Position position, int y) {
+    return position.y + y - widget._offsetY - tile.minY();
   }
 
   @override
@@ -49,8 +61,9 @@ class _GridDisplayState extends State<GridDisplay> {
                         //validate position
                         var isValid = true;
                         for (var value in candidate.relativePositions) {
-                          if (!widget._grid
-                              .isValidPosition(value.x + x, value.y + y)) {
+                          if (!widget._grid.isValidPosition(
+                              getGridX(candidate, value, x),
+                              getGridY(candidate, value, y))) {
                             isValid = false;
                             break;
                           }
@@ -59,7 +72,9 @@ class _GridDisplayState extends State<GridDisplay> {
                         if (isValid) {
                           //set tile
                           for (var value in candidate.relativePositions) {
-                            _selected.add(Position(value.x + x, value.y + y));
+                            _selected.add(Position(
+                                getGridX(candidate, value, x),
+                                getGridY(candidate, value, y)));
                           }
 
                           selectedColor = candidate.color.withOpacity(0.5);
@@ -79,7 +94,9 @@ class _GridDisplayState extends State<GridDisplay> {
                     }
 
                     return SizedBox(
-                        height: 20, width: 20, child: Container(color: color));
+                        height: Tile.size.toDouble(),
+                        width: Tile.size.toDouble(),
+                        child: Container(color: color));
                   },
                   onAccept: (data) {
                     _selected = [];

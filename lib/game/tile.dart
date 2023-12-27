@@ -3,6 +3,8 @@ import 'dart:ui';
 import '../util/position.dart';
 
 class Tile {
+  static const int size = 20;
+
   final Color _color;
 
   late final List<Position> _relativePositions;
