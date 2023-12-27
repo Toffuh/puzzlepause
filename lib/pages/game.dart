@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:puzzelpause/components/game/gridDisplay.dart';
@@ -16,6 +18,8 @@ class Game extends StatefulWidget {
 class _GameState extends State<Game> {
   late Grid grid;
   late List<Tile> openTiles;
+
+  bool isInGrid = false;
 
   @override
   void initState() {
@@ -40,7 +44,16 @@ class _GameState extends State<Game> {
               (tile, x, y) => {
                     setState(
                       () {
-                        for (var position in tile.relativPositions) {
+                        //validate position
+                        for (var position in tile.relativePositions) {
+                          if (!grid.isValidPosition(
+                              position.x + x, position.y + y)) {
+                            return;
+                          }
+                        }
+
+                        //set tiles
+                        for (var position in tile.relativePositions) {
                           grid.setTile(position.x + x, position.y + y, tile);
                           openTiles.remove(tile);
                         }

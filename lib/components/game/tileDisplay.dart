@@ -13,10 +13,10 @@ class TileDisplay extends StatelessWidget {
       height: 100,
       child: Stack(
         children: [
-          for (var positions in tile.relativPositions)
+          for (var positions in tile.relativePositions)
             Positioned(
-                left: (20 * positions.x).toDouble(),
-                top: (20 * positions.y).toDouble(),
+                left: (20 * (positions.x - tile.minX())).toDouble(),
+                top: (20 * (positions.y - tile.minY())).toDouble(),
                 width: 20,
                 height: 20,
                 child: Container(
