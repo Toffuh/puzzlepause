@@ -22,6 +22,17 @@ class Grid {
     _gameField[x][y] = tile;
   }
 
+  bool isNotInGrid(int x, int y) {
+    return x < 0 || x >= _width || y < 0 || y >= _height;
+  }
+  bool isValidPosition(int x, int y){
+    if (isNotInGrid(x, y)) {
+      return false;
+    }
+
+    return getTile(x, y) == null;
+  }
+
   int get height => _height;
 
   int get width => _width;

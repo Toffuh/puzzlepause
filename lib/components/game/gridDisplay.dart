@@ -46,13 +46,26 @@ class _GridDisplayState extends State<GridDisplay> {
                       if (!isUpdate) {
                         var candidate = candidateData.elementAtOrNull(0)!;
 
+                        //validate position
+                        var isValid = true;
                         for (var value in candidate.relativePositions) {
-                          _selected.add(Position(value.x + x, value.y + y));
+                          if (!widget._grid
+                              .isValidPosition(value.x + x, value.y + y)) {
+                            isValid = false;
+                            break;
+                          }
                         }
 
-                        selectedColor = candidate.color.withOpacity(0.5);
+                        if (isValid) {
+                          //set tile
+                          for (var value in candidate.relativePositions) {
+                            _selected.add(Position(value.x + x, value.y + y));
+                          }
 
-                        update();
+                          selectedColor = candidate.color.withOpacity(0.5);
+
+                          update();
+                        }
                       } else {
                         isUpdate = false;
                       }

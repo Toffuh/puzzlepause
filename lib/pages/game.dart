@@ -44,6 +44,15 @@ class _GameState extends State<Game> {
               (tile, x, y) => {
                     setState(
                       () {
+                        //validate position
+                        for (var position in tile.relativePositions) {
+                          if (!grid.isValidPosition(
+                              position.x + x, position.y + y)) {
+                            return;
+                          }
+                        }
+
+                        //set tiles
                         for (var position in tile.relativePositions) {
                           grid.setTile(position.x + x, position.y + y, tile);
                           openTiles.remove(tile);
