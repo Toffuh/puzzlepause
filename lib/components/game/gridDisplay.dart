@@ -22,17 +22,18 @@ class _GridDisplayState extends State<GridDisplay> {
   List<Position> _selected = [];
   Color? selectedColor;
 
+  bool isUpdate = false;
+
   void update() {
     Timer(Duration.zero, () {
+      isUpdate = true;
       setState(() {});
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    _selected = [];
-    selectedColor = null;
-    return Column(
+    var render = Column(
       children: [
         for (var y = 0; y < widget._grid.width; y++)
           Row(
@@ -42,15 +43,19 @@ class _GridDisplayState extends State<GridDisplay> {
                   builder: (BuildContext context, List<Tile?> candidateData,
                       List<dynamic> rejectedData) {
                     if (candidateData.isNotEmpty) {
-                      var candidate = candidateData.elementAtOrNull(0)!;
+                      if (!isUpdate) {
+                        var candidate = candidateData.elementAtOrNull(0)!;
 
-                      for (var value in candidate.relativPositions) {
-                        _selected.add(Position(value.x + x, value.y + y));
+                        for (var value in candidate.relativePositions) {
+                          _selected.add(Position(value.x + x, value.y + y));
+                        }
+
+                        selectedColor = candidate.color.withOpacity(0.5);
+
+                        update();
+                      } else {
+                        isUpdate = false;
                       }
-
-                      selectedColor = candidate.color.withOpacity(0.5);
-
-                      update();
                     }
 
                     Color? color =
@@ -63,11 +68,23 @@ class _GridDisplayState extends State<GridDisplay> {
                     return SizedBox(
                         height: 20, width: 20, child: Container(color: color));
                   },
-                  onAccept: (data) => widget._onAccept(data, x, y),
+                  onAccept: (data) {
+                    _selected = [];
+                    selectedColor = null;
+                    widget._onAccept(data, x, y);
+                  },
+                  onLeave: (data) {
+                    _selected = [];
+                    selectedColor = null;
+
+                    update();
+                  },
                 )
             ],
           )
       ],
     );
+
+    return render;
   }
 }

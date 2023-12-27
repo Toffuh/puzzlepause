@@ -5,37 +5,60 @@ import '../util/position.dart';
 class Tile {
   final Color _color;
 
-  //always can currently not have negativ values because of rendering
-  late final List<Position> _relativPositions;
+  late final List<Position> _relativePositions;
 
   Tile.pieceT(this._color) {
-    _relativPositions = [
-      Position(1, 1),
-      Position(1, 2),
+    _relativePositions = [
       Position(0, 0),
-      Position(1, 0),
-      Position(2, 0)
+      Position(0, 1),
+      Position(-1, -1),
+      Position(0, -1),
+      Position(1, -1)
     ];
   }
 
   Tile.pieceL(this._color) {
-    _relativPositions = [
-      Position(1, 1),
-      Position(1, 2),
-      Position(1, 0),
-      Position(2, 0)
+    _relativePositions = [
+      Position(0, 0),
+      Position(0, 1),
+      Position(0, -1),
+      Position(1, -1)
     ];
   }
 
   Tile.pieceLine(this._color) {
-    _relativPositions = [
-      Position(1, 1),
-      Position(1, 2),
-      Position(1, 0),
+    _relativePositions = [
+      Position(0, 0),
+      Position(0, 1),
+      Position(0, -1),
     ];
   }
 
   Color get color => _color;
 
-  List<Position> get relativPositions => _relativPositions;
+  List<Position> get relativePositions => _relativePositions;
+
+  int minY() {
+    var min = 0;
+
+    for (var value in _relativePositions) {
+      if (min > value.y) {
+        min = value.y;
+      }
+    }
+
+    return min;
+  }
+
+  int minX() {
+    var min = 0;
+
+    for (var value in _relativePositions) {
+      if (min > value.x) {
+        min = value.x;
+      }
+    }
+
+    return min;
+  }
 }
