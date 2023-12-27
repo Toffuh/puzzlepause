@@ -16,8 +16,9 @@ class Login extends StatelessWidget {
                 child: Stack(
                   children: [
                     TextButton(
-                        onPressed: () => {},
-                        child: const Icon(Icons.arrow_back)),
+                        onPressed: () => {Navigator.pop(context)},
+                        child:
+                            const Icon(Icons.arrow_back, color: Colors.white)),
                     const Center(
                       child: Text("PuzzlePause - Anmelden",
                           style: TextStyle(
