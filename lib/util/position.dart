@@ -1,3 +1,5 @@
+import '../game/tile.dart';
+
 class Position {
   int x;
   int y;
@@ -14,4 +16,12 @@ class Position {
 
   @override
   int get hashCode => x.hashCode ^ y.hashCode;
+
+  int getGridX(int column, Tile tile, int dragOffsetX) {
+    return x + column - dragOffsetX - tile.minX();
+  }
+
+  int getGridY(int row, Tile tile, int dragOffsetY) {
+    return y + row - dragOffsetY - tile.minY();
+  }
 }

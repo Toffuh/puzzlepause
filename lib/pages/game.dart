@@ -7,6 +7,7 @@ import 'package:puzzelpause/components/game/tileDisplay.dart';
 import 'package:puzzelpause/game/grid.dart';
 
 import '../game/tile.dart';
+import '../util/position.dart';
 
 class Game extends StatefulWidget {
   const Game({super.key});
@@ -50,14 +51,16 @@ class _GameState extends State<Game> {
                         //validate position
                         for (var position in tile.relativePositions) {
                           if (!grid.isValidPosition(
-                              position.x + x, position.y + y)) {
+                              position.getGridX(x, tile, offsetX),
+                              position.getGridY(y, tile, offsetY))) {
                             return;
                           }
                         }
 
                         //set tiles
                         for (var position in tile.relativePositions) {
-                          grid.setTile(position.x + x, position.y + y, tile);
+                          grid.setTile(position.getGridX(x, tile, offsetX),
+                              position.getGridY(y, tile, offsetY), tile);
                           openTiles.remove(tile);
                         }
                       },
