@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:puzzelpause/components/game/gridDisplay.dart';
-import 'package:puzzelpause/components/game/tileDisplay.dart';
+import 'package:puzzelpause/components/game/pieceDisplay.dart';
 import 'package:puzzelpause/game/grid.dart';
+import 'package:puzzelpause/game/tile.dart';
 
 import '../game/tile.dart';
 import '../util/position.dart';
@@ -18,7 +19,7 @@ class Game extends StatefulWidget {
 
 class _GameState extends State<Game> {
   late Grid grid;
-  late List<Tile> openTiles;
+  late List<Piece> openPieces;
 
   bool isInGrid = false;
 
@@ -26,10 +27,10 @@ class _GameState extends State<Game> {
   void initState() {
     grid = Grid(10, 10);
 
-    openTiles = [
-      Tile.pieceT(Colors.red),
-      Tile.pieceL(Colors.yellow),
-      Tile.pieceLine(Colors.green)
+    openPieces = [
+      Piece.pieceT(Colors.red),
+      Piece.pieceL(Colors.yellow),
+      Piece.pieceLine(Colors.green)
     ];
 
     super.initState();
@@ -45,11 +46,11 @@ class _GameState extends State<Game> {
         children: [
           GridDisplay(
               grid,
-              (tile, x, y) => {
+              (piece, x, y) => {
                     setState(
                       () {
                         //validate position
-                        for (var position in tile.relativePositions) {
+                        for (var position in piece.relativePositions) {
                           if (!grid.isValidPosition(
                               position.getGridX(x, tile, offsetX),
                               position.getGridY(y, tile, offsetY))) {
@@ -70,10 +71,10 @@ class _GameState extends State<Game> {
               offsetY),
           Column(
             children: [
-              for (var value in openTiles)
-                Draggable<Tile>(
-                    data: value,
-                    feedback: TileDisplay(value),
+              for (var piece in openPieces)
+                Draggable<Piece>(
+                    data: piece,
+                    feedback: PieceDisplay(piece),
                     child: Listener(
                         onPointerDown: (details) {
                           setState(() {
@@ -83,7 +84,7 @@ class _GameState extends State<Game> {
                                 Tile.size.toDouble();
                           });
                         },
-                        child: TileDisplay(value)))
+                        child: PieceDisplay(piece)))
             ],
           ),
         ],
