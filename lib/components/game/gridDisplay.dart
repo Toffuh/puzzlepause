@@ -55,8 +55,8 @@ class _GridDisplayState extends State<GridDisplay> {
                         var isValid = true;
                         for (var position in piece.relativePositions) {
                           if (!widget._grid.isValidPosition(
-                              value.getGridX(x, candidate, widget._offsetX),
-                              value.getGridY(y, candidate, widget._offsetY))) {
+                              position.getGridX(x, piece, widget._offsetX),
+                              position.getGridY(y, piece, widget._offsetY))) {
                             isValid = false;
                             break;
                           }
@@ -66,8 +66,8 @@ class _GridDisplayState extends State<GridDisplay> {
                           //set tile
                           for (var position in piece.relativePositions) {
                             _selected.add(Position(
-                                value.getGridX(x, candidate, widget._offsetX),
-                                value.getGridY(y, candidate, widget._offsetY)));
+                                position.getGridX(x, piece, widget._offsetX),
+                                position.getGridY(y, piece, widget._offsetY)));
                           }
 
                           selectedColor = piece.color.withOpacity(0.5);

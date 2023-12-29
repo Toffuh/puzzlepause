@@ -7,6 +7,7 @@ import 'package:puzzelpause/components/game/pieceDisplay.dart';
 import 'package:puzzelpause/game/grid.dart';
 import 'package:puzzelpause/game/tile.dart';
 
+import '../game/piece.dart';
 import '../game/tile.dart';
 import '../util/position.dart';
 
@@ -52,17 +53,17 @@ class _GameState extends State<Game> {
                         //validate position
                         for (var position in piece.relativePositions) {
                           if (!grid.isValidPosition(
-                              position.getGridX(x, tile, offsetX),
-                              position.getGridY(y, tile, offsetY))) {
+                              position.getGridX(x, piece, offsetX),
+                              position.getGridY(y, piece, offsetY))) {
                             return;
                           }
                         }
 
                         //set tiles
-                        for (var position in tile.relativePositions) {
-                          grid.setTile(position.getGridX(x, tile, offsetX),
-                              position.getGridY(y, tile, offsetY), tile);
-                          openTiles.remove(tile);
+                        for (var position in piece.relativePositions) {
+                          grid.setTile(position.getGridX(x, piece, offsetX),
+                              position.getGridY(y, piece, offsetY), Tile.fromPiece(piece));
+                          openPieces.remove(piece);
                         }
                       },
                     )
