@@ -6,11 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:puzzelpause/util/position.dart';
 
 import '../../game/grid.dart';
+import '../../game/piece.dart';
 import '../../game/tile.dart';
 
 class GridDisplay extends StatefulWidget {
   final Grid _grid;
-  final Function(Tile tile, int x, int y) _onAccept;
+  final Function(Piece piece, int x, int y) _onAccept;
 
   final int _offsetX;
   final int _offsetY;
@@ -43,19 +44,19 @@ class _GridDisplayState extends State<GridDisplay> {
           Row(
             children: [
               for (var x = 0; x < widget._grid.height; x++)
-                DragTarget<Tile>(
-                  builder: (BuildContext context, List<Tile?> candidateData,
+                DragTarget<Piece>(
+                  builder: (BuildContext context, List<Piece?> candidateData,
                       List<dynamic> rejectedData) {
                     if (candidateData.isNotEmpty) {
                       if (!isUpdate) {
-                        var candidate = candidateData.elementAtOrNull(0)!;
+                        var piece = candidateData.elementAtOrNull(0)!;
 
                         //validate position
                         var isValid = true;
-                        for (var value in candidate.relativePositions) {
+                        for (var position in piece.relativePositions) {
                           if (!widget._grid.isValidPosition(
-                              value.getGridX(x, candidate, widget._offsetX),
-                              value.getGridY(y, candidate, widget._offsetY))) {
+                              position.getGridX(x, piece, widget._offsetX),
+                              position.getGridY(y, piece, widget._offsetY))) {
                             isValid = false;
                             break;
                           }
@@ -63,13 +64,13 @@ class _GridDisplayState extends State<GridDisplay> {
 
                         if (isValid) {
                           //set tile
-                          for (var value in candidate.relativePositions) {
+                          for (var position in piece.relativePositions) {
                             _selected.add(Position(
-                                value.getGridX(x, candidate, widget._offsetX),
-                                value.getGridY(y, candidate, widget._offsetY)));
+                                position.getGridX(x, piece, widget._offsetX),
+                                position.getGridY(y, piece, widget._offsetY)));
                           }
 
-                          selectedColor = candidate.color.withOpacity(0.5);
+                          selectedColor = piece.color.withOpacity(0.5);
 
                           update();
                         }
