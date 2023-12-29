@@ -35,14 +35,6 @@ class _GridDisplayState extends State<GridDisplay> {
     });
   }
 
-  int getGridX(Tile tile, Position position, int x) {
-    return position.x + x - widget._offsetX - tile.minX();
-  }
-
-  int getGridY(Tile tile, Position position, int y) {
-    return position.y + y - widget._offsetY - tile.minY();
-  }
-
   @override
   Widget build(BuildContext context) {
     var render = Column(
@@ -62,8 +54,8 @@ class _GridDisplayState extends State<GridDisplay> {
                         var isValid = true;
                         for (var value in candidate.relativePositions) {
                           if (!widget._grid.isValidPosition(
-                              getGridX(candidate, value, x),
-                              getGridY(candidate, value, y))) {
+                              value.getGridX(x, candidate, widget._offsetX),
+                              value.getGridY(y, candidate, widget._offsetY))) {
                             isValid = false;
                             break;
                           }
@@ -73,8 +65,8 @@ class _GridDisplayState extends State<GridDisplay> {
                           //set tile
                           for (var value in candidate.relativePositions) {
                             _selected.add(Position(
-                                getGridX(candidate, value, x),
-                                getGridY(candidate, value, y)));
+                                value.getGridX(x, candidate, widget._offsetX),
+                                value.getGridY(y, candidate, widget._offsetY)));
                           }
 
                           selectedColor = candidate.color.withOpacity(0.5);
