@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:puzzelpause/auth/googleAuth.dart';
+import 'package:puzzelpause/auth/googleAuthClass.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
