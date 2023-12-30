@@ -4,6 +4,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 
+import '../globals/globals.dart';
+
 class Login extends StatefulWidget {
   const Login({super.key});
 
@@ -12,11 +14,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  String? uid = "";
-  String? email = "";
-  String? displayName = "";
-  String? photoURL =
-      "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png";
 
   @override
   Widget build(BuildContext context) {
