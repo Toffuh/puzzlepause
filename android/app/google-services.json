@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "152856632849",
+    "project_id": "puzzlepause-fe548",
+    "storage_bucket": "puzzlepause-fe548.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:152856632849:android:b33dd63605143731ec9bb0",
+        "android_client_info": {
+          "package_name": "com.example.puzzelpause"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "152856632849-glsksgnc7ji0m7cnin6qqn297999vmaq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.puzzelpause",
+            "certificate_hash": "ce847c3b2a61ec938415b7ec2af7644f2bda938f"
+          }
+        },
+        {
+          "client_id": "152856632849-6rmn1klasong8617aoigrs1pguvqe04q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD--Nq-dL76eo5Ogopx0T3S3YHbsp10dtc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "152856632849-6rmn1klasong8617aoigrs1pguvqe04q.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "152856632849-rn3vrtn602kvo7jaur8bm3iauhm5k4jo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.puzzelpause"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

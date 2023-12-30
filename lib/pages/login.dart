@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:puzzelpause/auth/googleAuth.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -41,7 +42,9 @@ class Login extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
               child: TextButton(
-                  onPressed: () => {},
+                  onPressed: () => {
+                    GoogleAuth().signInWithGoogle()
+                  },
                   child: const Text("Google - Auth",
                       style: TextStyle(
                           color: Colors.white,
