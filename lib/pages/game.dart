@@ -26,7 +26,7 @@ class _GameState extends State<Game> {
 
   @override
   void initState() {
-    grid = Grid(10, 10);
+    grid = Grid(9, 9);
 
     openPieces = [
       Piece.pieceT(Colors.red),
