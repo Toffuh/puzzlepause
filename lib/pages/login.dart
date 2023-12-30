@@ -12,6 +12,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  String? uid = "";
   String? email = "";
   String? displayName = "";
   String? photoURL =
@@ -54,31 +55,49 @@ class _LoginState extends State<Login> {
           )
         ],
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 50, 0,0),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-                child: SignInButton(
-                  Buttons.gitHub,
-                  text: "Anmelden mit GitHub",
-                  onPressed: () {},
-                ),
+      body: uid!.isEmpty ? logInWidget() : logOutWidget(),
+    );
+  }
+
+  Widget logInWidget() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 50, 0,0),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+              child: SignInButton(
+                Buttons.gitHub,
+                text: "Anmelden mit GitHub",
+                onPressed: () {},
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-                child: SignInButton(
-                  Buttons.google,
-                  text: "Anmelden mit Google",
-                  onPressed: () {
-                    signInWithGoogle();
-                  },
-                ),
-              )
-            ],
-          ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+              child: SignInButton(
+                Buttons.google,
+                text: "Anmelden mit Google",
+                onPressed: () {
+                  signInWithGoogle();
+                },
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget logOutWidget() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+        child: TextButton(
+          child: const Text("Abmelden"),
+          onPressed: () {
+            signOutWithGoogle();
+          },
         ),
       ),
     );
@@ -99,6 +118,7 @@ class _LoginState extends State<Login> {
         await FirebaseAuth.instance.signInWithCredential(authCredential);
 
     setState(() {
+      uid = userCredential.user?.uid;
       email = userCredential.user?.email;
       displayName = userCredential.user?.displayName;
       photoURL = userCredential.user?.photoURL;
@@ -106,13 +126,14 @@ class _LoginState extends State<Login> {
   }
 
   signOutWithGoogle() async {
-    await GoogleSignIn().signOut();
+    await GoogleSignIn(clientId: "152856632849-6rmn1klasong8617aoigrs1pguvqe04q.apps.googleusercontent.com").signOut();
     FirebaseAuth.instance.signOut();
 
     setState(() {
+      uid = "";
       email = "";
       displayName = "";
-      photoURL = "";
+      photoURL = "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png";
     });
   }
 }
