@@ -43,49 +43,60 @@ class _GameState extends State<Game> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 31, 16, 42),
       body: Column(
         children: [
-          GridDisplay(
-              grid,
-              (piece, x, y) => {
-                    setState(
-                      () {
-                        //validate position
-                        for (var position in piece.relativePositions) {
-                          if (!grid.isValidPosition(
-                              position.getGridX(x, piece, offsetX),
-                              position.getGridY(y, piece, offsetY))) {
-                            return;
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: GridDisplay(
+                grid,
+                (piece, x, y) => {
+                      setState(
+                        () {
+                          //validate position
+                          for (var position in piece.relativePositions) {
+                            if (!grid.isValidPosition(
+                                position.getGridX(x, piece, offsetX),
+                                position.getGridY(y, piece, offsetY))) {
+                              return;
+                            }
                           }
-                        }
 
-                        //set tiles
-                        for (var position in piece.relativePositions) {
-                          grid.setTile(position.getGridX(x, piece, offsetX),
-                              position.getGridY(y, piece, offsetY), Tile.fromPiece(piece));
-                          openPieces.remove(piece);
-                        }
-                      },
-                    )
-                  },
-              offsetX,
-              offsetY),
-          Column(
+                          //set tiles
+                          for (var position in piece.relativePositions) {
+                            grid.setTile(
+                                position.getGridX(x, piece, offsetX),
+                                position.getGridY(y, piece, offsetY),
+                                Tile.fromPiece(piece));
+                            openPieces.remove(piece);
+                          }
+                        },
+                      )
+                    },
+                offsetX,
+                offsetY),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               for (var piece in openPieces)
-                Draggable<Piece>(
-                    data: piece,
-                    feedback: PieceDisplay(piece),
-                    child: Listener(
-                        onPointerDown: (details) {
-                          setState(() {
-                            offsetX = details.localPosition.dx ~/
-                                Tile.size.toDouble();
-                            offsetY = details.localPosition.dy ~/
-                                Tile.size.toDouble();
-                          });
-                        },
-                        child: PieceDisplay(piece)))
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Draggable<Piece>(
+                      data: piece,
+                      childWhenDragging: Container(),
+                      feedback: PieceDisplay(piece),
+                      child: Listener(
+                          onPointerDown: (details) {
+                            setState(() {
+                              offsetX = details.localPosition.dx ~/
+                                  Tile.size.toDouble();
+                              offsetY = details.localPosition.dy ~/
+                                  Tile.size.toDouble();
+                            });
+                          },
+                          child: PieceDisplay(piece))),
+                )
             ],
           ),
         ],

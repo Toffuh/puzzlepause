@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:puzzelpause/game/piece.dart';
 
 class Tile {
-  static const int size = 20;
+  static const int size = 40;
 
   late final Color _color;
 
