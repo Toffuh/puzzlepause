@@ -2,9 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:puzzelpause/globals/userData.dart';
 import 'package:sign_in_button/sign_in_button.dart';
-
-import '../globals/globals.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -14,7 +13,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,9 +20,7 @@ class _LoginState extends State<Login> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 31, 16, 42),
         leading: IconButton(
-          onPressed: () => {
-            Navigator.pop(context)
-          },
+          onPressed: () => {Navigator.pop(context)},
           icon: const Icon(Icons.arrow_back, color: Colors.white),
         ),
         title: const Center(
@@ -45,21 +41,22 @@ class _LoginState extends State<Login> {
               width: 40,
               alignment: Alignment.topRight,
               child: Image.network(
-                photoURL!,
+                UserData.getInstance().photoURL,
                 fit: BoxFit.cover,
               ),
             ),
           )
         ],
       ),
-      body: uid!.isEmpty ? logInWidget() : logOutWidget(),
+      body:
+          UserData.getInstance().uid == null ? logInWidget() : logOutWidget(),
     );
   }
 
   Widget logInWidget() {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 50, 0,0),
+        padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
         child: Column(
           children: [
             Padding(
@@ -115,22 +112,27 @@ class _LoginState extends State<Login> {
         await FirebaseAuth.instance.signInWithCredential(authCredential);
 
     setState(() {
-      uid = userCredential.user?.uid;
-      email = userCredential.user?.email;
-      displayName = userCredential.user?.displayName;
-      photoURL = userCredential.user?.photoURL;
+      UserData.getInstance().uid = userCredential.user?.uid;
+      UserData.getInstance().email = userCredential.user?.email;
+      UserData.getInstance().displayName = userCredential.user?.displayName;
+      UserData.getInstance().photoURL = userCredential.user?.photoURL ??
+          "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png";
     });
   }
 
   signOutWithGoogle() async {
-    await GoogleSignIn(clientId: "152856632849-6rmn1klasong8617aoigrs1pguvqe04q.apps.googleusercontent.com").signOut();
+    await GoogleSignIn(
+            clientId:
+                "152856632849-6rmn1klasong8617aoigrs1pguvqe04q.apps.googleusercontent.com")
+        .signOut();
     FirebaseAuth.instance.signOut();
 
     setState(() {
-      uid = "";
-      email = "";
-      displayName = "";
-      photoURL = "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png";
+      UserData.getInstance().uid = null;
+      UserData.getInstance().email = null;
+      UserData.getInstance().displayName = null;
+      UserData.getInstance().photoURL =
+          "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png";
     });
   }
 }
