@@ -24,11 +24,6 @@ class Home extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                               fontSize: 30)),
                     ),
-                    // Container(
-                    //   alignment: Alignment.topRight,
-                    //   height: 60,
-                    //   child: Image.network(""),
-                    // )
                   ],
                 )),
             Padding(

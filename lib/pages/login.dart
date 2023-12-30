@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -11,79 +12,91 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   String? email = "";
   String? displayName = "";
-  String? photoURL = "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png";
+  String? photoURL =
+      "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 31, 16, 42),
-      body: Center(
-        child: Column(
-          children: [
-            Padding(
-                padding: const EdgeInsets.all(30),
-                child: Stack(
-                  children: [
-                    TextButton(
-                        onPressed: () => {Navigator.pop(context)},
-                        child:
-                            const Icon(Icons.arrow_back, color: Colors.white)),
-                    const Center(
-                      child: Text("PuzzlePause - Anmelden",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30)),
-                    ),
-                    Container(
-                      alignment: Alignment.topRight,
-                      height: 60,
-                      child: Image.network(photoURL!),
-                    )
-                  ],
-                )),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-              child: TextButton(
-                  onPressed: () => {},
-                  child: const Text("GitHub - OAuth",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22))),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 31, 16, 42),
+        leading: IconButton(
+          onPressed: () => {
+            Navigator.pop(context)
+          },
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+        ),
+        title: const Center(
+          child: Text(
+            "Anmelden",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 30,
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-              child: TextButton(
-                  onPressed: () => {
-                    signInWithGoogle()
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () => {},
+            icon: Container(
+              height: 40,
+              width: 40,
+              alignment: Alignment.topRight,
+              child: Image.network(
+                photoURL!,
+                fit: BoxFit.cover,
+              ),
+            ),
+          )
+        ],
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 50, 0,0),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+                child: SignInButton(
+                  Buttons.gitHub,
+                  text: "Anmelden mit GitHub",
+                  onPressed: () {},
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+                child: SignInButton(
+                  Buttons.google,
+                  text: "Anmelden mit Google",
+                  onPressed: () {
+                    signInWithGoogle();
                   },
-                  child: const Text("Google - Auth",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22))),
-            )
-          ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 
   signInWithGoogle() async {
-    GoogleSignInAccount? googleUser = await GoogleSignIn(clientId: "152856632849-6rmn1klasong8617aoigrs1pguvqe04q.apps.googleusercontent.com").signIn();
+    GoogleSignInAccount? googleUser = await GoogleSignIn(
+            clientId:
+                "152856632849-6rmn1klasong8617aoigrs1pguvqe04q.apps.googleusercontent.com")
+        .signIn();
 
     GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 
     AuthCredential authCredential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken
-    );
+        accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
 
-    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(authCredential);
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(authCredential);
 
     setState(() {
       email = userCredential.user?.email;
