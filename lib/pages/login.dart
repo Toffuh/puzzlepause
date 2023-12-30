@@ -1,9 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:puzzelpause/auth/googleAuthClass.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({super.key});
+
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+
+  String? email = "";
+  String? displayName = "";
+  String? photoURL = "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png";
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +37,11 @@ class Login extends StatelessWidget {
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 30)),
+                    ),
+                    Container(
+                      alignment: Alignment.topRight,
+                      height: 60,
+                      child: Image.network(photoURL!),
                     )
                   ],
                 )),
@@ -43,7 +59,7 @@ class Login extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
               child: TextButton(
                   onPressed: () => {
-                    GoogleAuth().signInWithGoogle()
+                    signInWithGoogle()
                   },
                   child: const Text("Google - Auth",
                       style: TextStyle(
@@ -55,5 +71,35 @@ class Login extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  signInWithGoogle() async {
+    GoogleSignInAccount? googleUser = await GoogleSignIn(clientId: "152856632849-6rmn1klasong8617aoigrs1pguvqe04q.apps.googleusercontent.com").signIn();
+
+    GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+    AuthCredential authCredential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken
+    );
+
+    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(authCredential);
+
+    setState(() {
+      email = userCredential.user?.email;
+      displayName = userCredential.user?.displayName;
+      photoURL = userCredential.user?.photoURL;
+    });
+  }
+
+  signOutWithGoogle() async {
+    await GoogleSignIn().signOut();
+    FirebaseAuth.instance.signOut();
+
+    setState(() {
+      email = "";
+      displayName = "";
+      photoURL = "";
+    });
   }
 }

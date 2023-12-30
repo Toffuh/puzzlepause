@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../auth/googleAuthClass.dart';
+
 class Home extends StatelessWidget {
   const Home({super.key});
 
@@ -11,17 +13,22 @@ class Home extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            const Padding(
-                padding: EdgeInsets.all(30),
+            Padding(
+                padding: const EdgeInsets.all(30),
                 child: Stack(
                   children: [
-                    Center(
+                    const Center(
                       child: Text("PuzzlePause - Gemütliches Tetris",
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 30)),
-                    )
+                    ),
+                    // Container(
+                    //   alignment: Alignment.topRight,
+                    //   height: 60,
+                    //   child: Image.network(""),
+                    // )
                   ],
                 )),
             Padding(
