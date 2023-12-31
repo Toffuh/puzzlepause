@@ -67,6 +67,7 @@ class _GameState extends State<Game> {
                         }
 
                         removeOpenPiece(piece);
+                        grid.clear();
                       },
                     )
                   },
