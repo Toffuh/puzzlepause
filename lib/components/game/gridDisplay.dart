@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:puzzelpause/components/game/tileDisplay.dart';
 import 'package:puzzelpause/util/position.dart';
 
 import '../../game/grid.dart';
@@ -42,6 +43,7 @@ class _GridDisplayState extends State<GridDisplay> {
       children: [
         for (var y = 0; y < Grid.size; y++)
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               for (var x = 0; x < Grid.size; x++)
                 DragTarget<Piece>(
@@ -79,17 +81,13 @@ class _GridDisplayState extends State<GridDisplay> {
                       }
                     }
 
-                    Color? color =
-                        widget._grid.getTile(x, y)?.color ?? Colors.grey;
+                    Color? color = widget._grid.getTile(x, y)?.color;
 
                     if (_selected.contains(Position(x, y))) {
                       color = selectedColor;
                     }
 
-                    return SizedBox(
-                        height: Tile.size.toDouble(),
-                        width: Tile.size.toDouble(),
-                        child: Container(color: color));
+                    return TileDisplay(color, x, y);
                   },
                   onAccept: (data) {
                     _selected = [];
