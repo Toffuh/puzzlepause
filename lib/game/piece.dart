@@ -61,4 +61,36 @@ class Piece {
 
     return min;
   }
+
+  int maxY() {
+    var max = 0;
+
+    for (var value in _relativePositions) {
+      if (max < value.y) {
+        max = value.y;
+      }
+    }
+
+    return max;
+  }
+
+  int maxX() {
+    var max = 0;
+
+    for (var value in _relativePositions) {
+      if (max < value.x) {
+        max = value.x;
+      }
+    }
+
+    return max;
+  }
+
+  int width() {
+    return maxX() - minX() + 1;
+  }
+
+  int height() {
+    return maxY() - minY() + 1;
+  }
 }
