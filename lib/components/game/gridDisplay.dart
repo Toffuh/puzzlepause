@@ -40,10 +40,10 @@ class _GridDisplayState extends State<GridDisplay> {
   Widget build(BuildContext context) {
     var render = Column(
       children: [
-        for (var y = 0; y < widget._grid.width; y++)
+        for (var y = 0; y < Grid.size; y++)
           Row(
             children: [
-              for (var x = 0; x < widget._grid.height; x++)
+              for (var x = 0; x < Grid.size; x++)
                 DragTarget<Piece>(
                   builder: (BuildContext context, List<Piece?> candidateData,
                       List<dynamic> rejectedData) {
