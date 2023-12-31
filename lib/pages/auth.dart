@@ -1,18 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:puzzelpause/components/login/login.dart';
+import 'package:puzzelpause/components/login/logout.dart';
 import 'package:puzzelpause/globals/userData.dart';
-import 'package:sign_in_button/sign_in_button.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class Auth extends StatefulWidget {
+  const Auth({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Auth> createState() => _AuthState();
 }
 
-class _LoginState extends State<Login> {
+class _AuthState extends State<Auth> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,52 +48,7 @@ class _LoginState extends State<Login> {
           )
         ],
       ),
-      body:
-          UserData.getInstance().uid == null ? logInWidget() : logOutWidget(),
-    );
-  }
-
-  Widget logInWidget() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-              child: SignInButton(
-                Buttons.gitHub,
-                text: "Anmelden mit GitHub",
-                onPressed: () {},
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-              child: SignInButton(
-                Buttons.google,
-                text: "Anmelden mit Google",
-                onPressed: () {
-                  signInWithGoogle();
-                },
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget logOutWidget() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-        child: TextButton(
-          child: const Text("Abmelden"),
-          onPressed: () {
-            signOutWithGoogle();
-          },
-        ),
-      ),
+      body: UserData.getInstance().uid == null ? const Login() : const Logout(),
     );
   }
 

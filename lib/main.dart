@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:puzzelpause/pages/game.dart';
 import 'package:puzzelpause/pages/home.dart';
 import 'package:puzzelpause/pages/leaderboard.dart';
-import 'package:puzzelpause/pages/login.dart';
+import 'package:puzzelpause/pages/auth.dart';
 
 import 'firebase_options.dart';
 
@@ -32,10 +32,9 @@ class MyApp extends StatelessWidget {
         "/": (context) => const Home(),
         "/game": (context) => const Game(),
         "/leaderboard": (context) => const Leaderboard(),
-        "/login": (context) => const Login()
+        "/login": (context) => const Auth()
       },
       initialRoute: "/",
-      debugShowCheckedModeBanner: false,
     );
   }
 }
