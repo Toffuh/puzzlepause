@@ -1,37 +1,51 @@
+import 'dart:math';
 import 'dart:ui';
+
+import 'package:flutter/material.dart';
 
 import '../util/position.dart';
 
 class Piece {
-  final Color _color;
-
-  late final List<Position> _relativePositions;
-
-  Piece.pieceT(this._color) {
-    _relativePositions = [
+  static final List<List<Position>> pieceStructures = [
+    [
       Position(0, 0),
       Position(0, 1),
       Position(-1, -1),
       Position(0, -1),
       Position(1, -1)
-    ];
-  }
-
-  Piece.pieceL(this._color) {
-    _relativePositions = [
+    ],
+    [Position(0, 0), Position(0, 1), Position(0, -1), Position(1, -1)],
+    [
       Position(0, 0),
       Position(0, 1),
       Position(0, -1),
-      Position(1, -1)
-    ];
-  }
+    ]
+  ];
 
-  Piece.pieceLine(this._color) {
-    _relativePositions = [
-      Position(0, 0),
-      Position(0, 1),
-      Position(0, -1),
-    ];
+  static final List<Color> pieceColors = [
+    Colors.red,
+    Colors.blue,
+    Colors.green,
+    Colors.orange,
+    Colors.yellow,
+    Colors.purple
+  ];
+
+  final Color _color;
+
+  late final List<Position> _relativePositions;
+
+  Piece._(this._color, this._relativePositions);
+
+  static List<Piece> generateRandomPieces(int count) {
+    List<Piece> pieces = [];
+
+    for (var i = 0; i < count; i++) {
+      pieces.add(Piece._(pieceColors[Random().nextInt(pieceColors.length)],
+          pieceStructures[Random().nextInt(pieceStructures.length)]));
+    }
+
+    return pieces;
   }
 
   Color get color => _color;

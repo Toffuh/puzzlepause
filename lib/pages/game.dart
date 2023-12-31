@@ -28,11 +28,7 @@ class _GameState extends State<Game> {
   void initState() {
     grid = Grid();
 
-    openPieces = [
-      Piece.pieceT(Colors.red),
-      Piece.pieceL(Colors.yellow),
-      Piece.pieceLine(Colors.green)
-    ];
+    openPieces = Piece.generateRandomPieces(3);
 
     super.initState();
   }
@@ -68,9 +64,9 @@ class _GameState extends State<Game> {
                               position.getGridX(x, piece, offsetX),
                               position.getGridY(y, piece, offsetY),
                               Tile.fromPiece(piece));
-                          openPieces.remove(piece);
                         }
 
+                        removeOpenPiece(piece);
                         grid.clear();
                       },
                     )
@@ -104,5 +100,13 @@ class _GameState extends State<Game> {
         ],
       ),
     );
+  }
+
+  void removeOpenPiece(Piece piece) {
+    openPieces.remove(piece);
+
+    if (openPieces.isEmpty) {
+      openPieces = Piece.generateRandomPieces(3);
+    }
   }
 }
