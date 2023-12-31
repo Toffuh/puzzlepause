@@ -1,10 +1,19 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:puzzelpause/pages/game.dart';
 import 'package:puzzelpause/pages/home.dart';
 import 'package:puzzelpause/pages/leaderboard.dart';
-import 'package:puzzelpause/pages/login.dart';
+import 'package:puzzelpause/pages/auth.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
@@ -23,7 +32,7 @@ class MyApp extends StatelessWidget {
         "/": (context) => const Home(),
         "/game": (context) => const Game(),
         "/leaderboard": (context) => const Leaderboard(),
-        "/login": (context) => const Login()
+        "/login": (context) => const Auth()
       },
       initialRoute: "/",
     );
