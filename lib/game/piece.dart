@@ -24,11 +24,11 @@ class Piece {
 
   static final List<Color> pieceColors = [
     Colors.red,
-    Colors.blue,
     Colors.green,
     Colors.orange,
     Colors.yellow,
-    Colors.purple
+    Colors.purple,
+    Colors.brown,
   ];
 
   final Color _color;
