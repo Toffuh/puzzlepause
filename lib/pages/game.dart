@@ -26,7 +26,7 @@ class _GameState extends State<Game> {
 
   @override
   void initState() {
-    grid = Grid(9, 9);
+    grid = Grid();
 
     openPieces = Piece.generateRandomPieces(3);
 
@@ -72,20 +72,6 @@ class _GameState extends State<Game> {
                   },
               offsetX,
               offsetY),
-          Column(
-                          //set tiles
-                          for (var position in piece.relativePositions) {
-                            grid.setTile(
-                                position.getGridX(x, piece, offsetX),
-                                position.getGridY(y, piece, offsetY),
-                                Tile.fromPiece(piece));
-                            openPieces.remove(piece);
-                          }
-                        },
-                      )
-                    },
-                offsetX,
-                offsetY),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
