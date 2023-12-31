@@ -26,7 +26,7 @@ class _GameState extends State<Game> {
 
   @override
   void initState() {
-    grid = Grid(9, 9);
+    grid = Grid();
 
     openPieces = [
       Piece.pieceT(Colors.red),
@@ -62,19 +62,21 @@ class _GameState extends State<Game> {
                             }
                           }
 
-                          //set tiles
-                          for (var position in piece.relativePositions) {
-                            grid.setTile(
-                                position.getGridX(x, piece, offsetX),
-                                position.getGridY(y, piece, offsetY),
-                                Tile.fromPiece(piece));
-                            openPieces.remove(piece);
-                          }
-                        },
-                      )
-                    },
-                offsetX,
-                offsetY),
+                        //set tiles
+                        for (var position in piece.relativePositions) {
+                          grid.setTile(
+                              position.getGridX(x, piece, offsetX),
+                              position.getGridY(y, piece, offsetY),
+                              Tile.fromPiece(piece));
+                          openPieces.remove(piece);
+                        }
+
+                        grid.clear();
+                      },
+                    )
+                  },
+              offsetX,
+              offsetY),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
