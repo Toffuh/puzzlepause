@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:puzzelpause/components/game/gridDisplay.dart';
 import 'package:puzzelpause/components/game/pieceDisplay.dart';
@@ -8,8 +5,6 @@ import 'package:puzzelpause/game/grid.dart';
 import 'package:puzzelpause/game/tile.dart';
 
 import '../game/piece.dart';
-import '../game/tile.dart';
-import '../util/position.dart';
 
 class Game extends StatefulWidget {
   const Game({super.key});

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +7,6 @@ import 'package:puzzelpause/util/position.dart';
 
 import '../../game/grid.dart';
 import '../../game/piece.dart';
-import '../../game/tile.dart';
 
 class GridDisplay extends StatefulWidget {
   final Grid _grid;
