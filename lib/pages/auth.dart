@@ -48,46 +48,11 @@ class _AuthState extends State<Auth> {
           )
         ],
       ),
-      body: UserData.getInstance().uid == null ? const Login() : const Logout(),
+      body: UserData.getInstance().uid == null ? Login(update) : Logout(update),
     );
   }
 
-  signInWithGoogle() async {
-    GoogleSignInAccount? googleUser = await GoogleSignIn(
-            clientId:
-                "152856632849-6rmn1klasong8617aoigrs1pguvqe04q.apps.googleusercontent.com")
-        .signIn();
-
-    GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-
-    AuthCredential authCredential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
-
-    UserCredential userCredential =
-        await FirebaseAuth.instance.signInWithCredential(authCredential);
-
-    setState(() {
-      UserData.getInstance().uid = userCredential.user?.uid;
-      UserData.getInstance().email = userCredential.user?.email;
-      UserData.getInstance().displayName = userCredential.user?.displayName;
-      UserData.getInstance().photoURL = userCredential.user?.photoURL ??
-          "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png";
-    });
-  }
-
-  signOutWithGoogle() async {
-    await GoogleSignIn(
-            clientId:
-                "152856632849-6rmn1klasong8617aoigrs1pguvqe04q.apps.googleusercontent.com")
-        .signOut();
-    FirebaseAuth.instance.signOut();
-
-    setState(() {
-      UserData.getInstance().uid = null;
-      UserData.getInstance().email = null;
-      UserData.getInstance().displayName = null;
-      UserData.getInstance().photoURL =
-          "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png";
-    });
+  update() {
+    setState(() {});
   }
 }
