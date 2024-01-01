@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,11 @@ class _GameState extends State<Game> {
 
   bool isInGrid = false;
 
+  int offsetX = 0;
+  int offsetY = 0;
+
+  bool hasLost = false;
+
   @override
   void initState() {
     grid = Grid();
@@ -33,15 +39,18 @@ class _GameState extends State<Game> {
     super.initState();
   }
 
-  int offsetX = 0;
-  int offsetY = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 31, 16, 42),
       body: Column(
         children: [
+          if (hasLost)
+            const Text("You have lost...",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22)),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: GridDisplay(
@@ -50,29 +59,26 @@ class _GameState extends State<Game> {
                       setState(
                         () {
                           //validate position
-                          for (var position in piece.relativePositions) {
-                            if (!grid.isValidPosition(
-                                position.getGridX(x, piece, offsetX),
-                                position.getGridY(y, piece, offsetY))) {
-                              return;
-                            }
+                          if (!grid.isValidPiece(
+                              piece, x, y, offsetX, offsetY)) {
+                            return;
                           }
 
-                        //set tiles
-                        for (var position in piece.relativePositions) {
-                          grid.setTile(
-                              position.getGridX(x, piece, offsetX),
-                              position.getGridY(y, piece, offsetY),
-                              Tile.fromPiece(piece));
-                        }
+                          //set tiles
+                          for (var position in piece.relativePositions) {
+                            grid.setTile(
+                                position.getGridX(x, piece, offsetX),
+                                position.getGridY(y, piece, offsetY),
+                                Tile.fromPiece(piece));
+                          }
 
-                        removeOpenPiece(piece);
-                        grid.clear();
-                      },
-                    )
-                  },
-              offsetX,
-              offsetY),
+                          grid.clear();
+                          removeOpenPiece(piece);
+                        },
+                      )
+                    },
+                offsetX,
+                offsetY),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -108,5 +114,23 @@ class _GameState extends State<Game> {
     if (openPieces.isEmpty) {
       openPieces = Piece.generateRandomPieces(3);
     }
+
+    if (checkLost()) {
+      hasLost = true;
+    }
+  }
+
+  bool checkLost() {
+    for (var piece in openPieces) {
+      for (int x = 0; x < Grid.size; x++) {
+        for (int y = 0; y < Grid.size; y++) {
+          if (grid.isValidPiece(piece, x, y, 0, 0)) {
+            return false;
+          }
+        }
+      }
+    }
+
+    return true;
   }
 }
