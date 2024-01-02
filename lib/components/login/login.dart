@@ -62,6 +62,7 @@ class Login extends StatelessWidget {
     UserData.getInstance().photoURL = userCredential.user?.photoURL ??
         "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png";
 
+    //add to firebase db
     DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
     final snapshot = await databaseReference
         .child("users/${UserData.getInstance().uid}")
