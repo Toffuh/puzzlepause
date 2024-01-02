@@ -25,9 +25,6 @@ class _GameState extends State<Game> {
 
   bool isInGrid = false;
 
-  int offsetX = 0;
-  int offsetY = 0;
-
   bool hasLost = false;
 
   @override
