@@ -1,3 +1,4 @@
+import 'package:puzzelpause/game/piece.dart';
 import 'package:puzzelpause/game/tile.dart';
 
 class Grid {
@@ -21,7 +22,9 @@ class Grid {
     _gameField[x][y] = tile;
   }
 
-  void clear() {
+  int clear() {
+    int? points;
+
     //columns
     outer:
     for (var x = 0; x < size; x++) {
@@ -30,6 +33,8 @@ class Grid {
           continue outer;
         }
       }
+
+      points = (points ?? 1) * 3;
 
       _gameField[x] = List.generate(size, growable: false, (index) => null);
     }
@@ -44,6 +49,8 @@ class Grid {
       }
 
       //reset row
+      points = (points ?? 1) * 3;
+
       for (var x = 0; x < size; x++) {
         _gameField[x][y] = null;
       }
@@ -62,6 +69,8 @@ class Grid {
           }
         }
 
+        points = (points ?? 1) * 3;
+
         for (var x = 0; x < 3; x++) {
           for (var y = 0; y < 3; y++) {
             _gameField[quadX * 3 + x][quadY * 3 + y] = null;
@@ -69,6 +78,8 @@ class Grid {
         }
       }
     }
+
+    return points ?? 0;
   }
 
   bool isNotInGrid(int x, int y) {
@@ -81,5 +92,16 @@ class Grid {
     }
 
     return getTile(x, y) == null;
+  }
+
+  bool isValidPiece(Piece piece, int x, int y, int offsetX, int offsetY) {
+    for (var position in piece.relativePositions) {
+      if (!isValidPosition(position.getGridX(x, piece, offsetX),
+          position.getGridY(y, piece, offsetY))) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }

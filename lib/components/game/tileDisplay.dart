@@ -17,16 +17,37 @@ class TileDisplay extends StatelessWidget {
       child: SizedBox(
           height: Tile.size.toDouble(),
           width: Tile.size.toDouble(),
-          child: Container(
-            decoration: BoxDecoration(
-                color: getColor(),
-                borderRadius:
-                    const BorderRadius.all(Radius.circular(Tile.size * 0.1))),
+          child: Stack(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                    color: getSecondaryColor(),
+                    borderRadius: const BorderRadius.all(
+                        Radius.circular(Tile.size * 0.1))),
+              ),
+              Positioned(
+                left: Tile.size.toDouble() * 0.05,
+                child: SizedBox(
+                  height: Tile.size.toDouble() * 0.9,
+                  width: Tile.size.toDouble() * 0.9,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: getMainColor(),
+                        borderRadius: const BorderRadius.all(
+                            Radius.circular(Tile.size * 0.1))),
+                  ),
+                ),
+              )
+            ],
           )),
     );
   }
 
-  Color? getColor() {
+  Color? getMainColor() {
+    if (tileColor != null) {
+      return tileColor!;
+    }
+
     var colorA = const Color(0xff7d80fa);
     var colorB = const Color(0xff8db7ff);
 
@@ -38,6 +59,14 @@ class TileDisplay extends StatelessWidget {
       defaultColor = colorB;
     }
 
-    return tileColor ?? defaultColor;
+    return defaultColor;
+  }
+
+  Color? getSecondaryColor() {
+    if (tileColor != null) {
+      return Color.lerp(tileColor, Colors.black, 0.3);
+    }
+
+    return getMainColor();
   }
 }

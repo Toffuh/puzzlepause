@@ -17,16 +17,49 @@ class Piece {
       Position(0, 0),
       Position(0, 1),
       Position(0, -1),
-    ]
+    ],
+    [
+      Position(0, 0),
+      Position(0, 1),
+      Position(1, 1),
+      Position(1, 0)
+    ],
+    [
+      Position(0, -1),
+      Position(-1, 0),
+      Position(0, 0),
+      Position(0, 1),
+    ],
+    [
+      Position(0, -1),
+      Position(-1, 0),
+      Position(0, 0),
+      Position(1, 0),
+      Position(0, 1),
+    ],
+    [
+      Position(0, -1),
+      Position(-1, 0),
+      Position(0, 0),
+      Position(1, -1),
+      Position(0, 1),
+    ],
+    [
+      Position(0, 0),
+      Position(0, 1),
+      Position(1, 1),
+      Position(1, 0),
+      Position(2, 1)
+    ],
   ];
 
   static final List<Color> pieceColors = [
     Colors.red,
-    Colors.blue,
     Colors.green,
     Colors.orange,
     Colors.yellow,
-    Colors.purple
+    Colors.purple,
+    Colors.brown,
   ];
 
   final Color _color;

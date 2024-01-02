@@ -20,7 +20,7 @@ class Home extends StatelessWidget {
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 30)),
-                    )
+                    ),
                   ],
                 )),
             Padding(
