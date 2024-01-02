@@ -126,23 +126,7 @@ class _GameState extends State<Game> {
     if (checkLost()) {
       hasLost = true;
 
-      dbUpdate();
-    }
-  }
-
-  void dbUpdate() async {
-    //update points in DB
-    DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
-    final snapshot = await databaseReference
-        .child("users/${UserData.getInstance().uid}/points")
-        .get();
-
-    if (snapshot.exists) {
-      if (points > int.parse(snapshot.value.toString())) {
-        await databaseReference
-            .child("users/${UserData.getInstance().uid}")
-            .update({"points": points});
-      }
+      UserData.getInstance().points = points;
     }
   }
 
