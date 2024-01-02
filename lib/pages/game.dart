@@ -134,15 +134,11 @@ class _GameState extends State<Game> {
     //update points in DB
     DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
     final snapshot = await databaseReference
-        .child("users/${UserData.getInstance().uid}")
+        .child("users/${UserData.getInstance().uid}/points")
         .get();
 
     if (snapshot.exists) {
-      final currentPoints = await databaseReference
-          .child("users/${UserData.getInstance().uid}/points")
-          .get();
-
-      if (points > int.parse(currentPoints.toString())) {
+      if (points > int.parse(snapshot.value.toString())) {
         await databaseReference
             .child("users/${UserData.getInstance().uid}")
             .update({"points": points});
