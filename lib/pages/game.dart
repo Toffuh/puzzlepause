@@ -116,7 +116,7 @@ class _GameState extends State<Game> {
     );
   }
 
-  void removeOpenPiece(Piece piece) async {
+  void removeOpenPiece(Piece piece) {
     openPieces.remove(piece);
 
     if (openPieces.isEmpty) {
@@ -126,17 +126,21 @@ class _GameState extends State<Game> {
     if (checkLost()) {
       hasLost = true;
 
-      //update points in DB
-      DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
-      final snapshot = await databaseReference
-          .child("users/${UserData.getInstance().uid}")
-          .get();
+      dbUpdate();
+    }
+  }
 
-      if (!snapshot.exists) {
-        await databaseReference
-            .child("users/${UserData.getInstance().uid}")
-            .update({"points": points});
-      }
+  void dbUpdate() async {
+    //update points in DB
+    DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
+    final snapshot = await databaseReference
+        .child("users/${UserData.getInstance().uid}")
+        .get();
+
+    if (snapshot.exists) {
+      await databaseReference
+          .child("users/${UserData.getInstance().uid}")
+          .update({"points": points});
     }
   }
 
