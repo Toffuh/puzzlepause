@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Home extends StatelessWidget {
-  const Home({super.key});
+class Login extends StatelessWidget {
+  const Login({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,26 +10,28 @@ class Home extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            const Padding(
-                padding: EdgeInsets.all(30),
+            Padding(
+                padding: const EdgeInsets.all(30),
                 child: Stack(
                   children: [
-                    Center(
-                      child: Text("PuzzlePause - Gemütliches Tetris",
+                    TextButton(
+                        onPressed: () => {Navigator.pop(context)},
+                        child:
+                            const Icon(Icons.arrow_back, color: Colors.white)),
+                    const Center(
+                      child: Text("PuzzlePause - Anmelden",
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 30)),
-                    ),
+                    )
                   ],
                 )),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
               child: TextButton(
-                  onPressed: () => {
-                    Navigator.pushNamed(context, "/game")
-                  },
-                  child: const Text("Spielen",
+                  onPressed: () => {},
+                  child: const Text("GitHub - OAuth",
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -38,27 +40,13 @@ class Home extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
               child: TextButton(
-                  onPressed: () => {
-                    Navigator.pushNamed(context, "/login")
-                  },
-                  child: const Text("Anmelden",
+                  onPressed: () => {},
+                  child: const Text("Google - Auth",
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 22))),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-              child: TextButton(
-                  onPressed: () => {
-                    Navigator.pushNamed(context, "/leaderboard")
-                  },
-                  child: const Text("Bestenliste",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22))),
-            ),
+            )
           ],
         ),
       ),

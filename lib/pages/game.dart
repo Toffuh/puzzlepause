@@ -9,8 +9,6 @@ import 'package:puzzelpause/game/grid.dart';
 import 'package:puzzelpause/game/tile.dart';
 
 import '../game/piece.dart';
-import '../game/tile.dart';
-import '../util/position.dart';
 
 class Game extends StatefulWidget {
   const Game({super.key});

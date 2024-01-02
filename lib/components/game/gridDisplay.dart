@@ -9,7 +9,6 @@ import 'package:puzzelpause/util/position.dart';
 
 import '../../game/grid.dart';
 import '../../game/piece.dart';
-import '../../game/tile.dart';
 
 class GridDisplay extends StatefulWidget {
   final Grid _grid;

@@ -1,7 +1,5 @@
 import 'package:puzzelpause/game/piece.dart';
 
-import '../game/tile.dart';
-
 class Position {
   int x;
   int y;
