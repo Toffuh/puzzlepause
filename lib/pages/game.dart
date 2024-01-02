@@ -138,9 +138,15 @@ class _GameState extends State<Game> {
         .get();
 
     if (snapshot.exists) {
-      await databaseReference
-          .child("users/${UserData.getInstance().uid}")
-          .update({"points": points});
+      final currentPoints = await databaseReference
+          .child("users/${UserData.getInstance().uid}/points")
+          .get();
+
+      if (points > int.parse(currentPoints.toString())) {
+        await databaseReference
+            .child("users/${UserData.getInstance().uid}")
+            .update({"points": points});
+      }
     }
   }
 
