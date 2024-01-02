@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:puzzelpause/components/game/gridDisplay.dart';
@@ -9,6 +10,7 @@ import 'package:puzzelpause/game/grid.dart';
 import 'package:puzzelpause/game/tile.dart';
 
 import '../game/piece.dart';
+import '../globals/userData.dart';
 
 class Game extends StatefulWidget {
   const Game({super.key});
@@ -114,7 +116,7 @@ class _GameState extends State<Game> {
     );
   }
 
-  void removeOpenPiece(Piece piece) {
+  void removeOpenPiece(Piece piece) async {
     openPieces.remove(piece);
 
     if (openPieces.isEmpty) {
@@ -123,6 +125,18 @@ class _GameState extends State<Game> {
 
     if (checkLost()) {
       hasLost = true;
+
+      //update points in DB
+      DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
+      final snapshot = await databaseReference
+          .child("users/${UserData.getInstance().uid}")
+          .get();
+
+      if (!snapshot.exists) {
+        await databaseReference
+            .child("users/${UserData.getInstance().uid}")
+            .update({"points": points});
+      }
     }
   }
 
