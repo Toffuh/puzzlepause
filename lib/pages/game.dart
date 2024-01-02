@@ -36,12 +36,20 @@ class _GameState extends State<Game> {
   int offsetX = 0;
   int offsetY = 0;
 
+  int points = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 31, 16, 42),
       body: Column(
         children: [
+          Text("Points: $points",
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
+              )),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: GridDisplay(
@@ -58,21 +66,21 @@ class _GameState extends State<Game> {
                             }
                           }
 
-                        //set tiles
-                        for (var position in piece.relativePositions) {
-                          grid.setTile(
-                              position.getGridX(x, piece, offsetX),
-                              position.getGridY(y, piece, offsetY),
-                              Tile.fromPiece(piece));
-                        }
+                          //set tiles
+                          for (var position in piece.relativePositions) {
+                            grid.setTile(
+                                position.getGridX(x, piece, offsetX),
+                                position.getGridY(y, piece, offsetY),
+                                Tile.fromPiece(piece));
+                          }
 
-                        removeOpenPiece(piece);
-                        grid.clear();
-                      },
-                    )
-                  },
-              offsetX,
-              offsetY),
+                          removeOpenPiece(piece);
+                          points += grid.clear();
+                        },
+                      )
+                    },
+                offsetX,
+                offsetY),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
