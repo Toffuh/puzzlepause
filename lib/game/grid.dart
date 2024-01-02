@@ -1,3 +1,4 @@
+import 'package:puzzelpause/game/piece.dart';
 import 'package:puzzelpause/game/tile.dart';
 
 class Grid {
@@ -91,5 +92,16 @@ class Grid {
     }
 
     return getTile(x, y) == null;
+  }
+
+  bool isValidPiece(Piece piece, int x, int y, int offsetX, int offsetY) {
+    for (var position in piece.relativePositions) {
+      if (!isValidPosition(position.getGridX(x, piece, offsetX),
+          position.getGridY(y, piece, offsetY))) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }

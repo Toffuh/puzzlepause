@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -53,18 +54,8 @@ class _GridDisplayState extends State<GridDisplay> {
                       if (!isUpdate) {
                         var piece = candidateData.elementAtOrNull(0)!;
 
-                        //validate position
-                        var isValid = true;
-                        for (var position in piece.relativePositions) {
-                          if (!widget._grid.isValidPosition(
-                              position.getGridX(x, piece, widget._offsetX),
-                              position.getGridY(y, piece, widget._offsetY))) {
-                            isValid = false;
-                            break;
-                          }
-                        }
-
-                        if (isValid) {
+                        if (widget._grid.isValidPiece(
+                            piece, x, y, widget._offsetX, widget._offsetY)) {
                           //set tile
                           for (var position in piece.relativePositions) {
                             _selected.add(Position(
