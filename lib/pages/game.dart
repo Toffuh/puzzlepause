@@ -39,6 +39,11 @@ class _GameState extends State<Game> {
     super.initState();
   }
 
+  int offsetX = 0;
+  int offsetY = 0;
+
+  int points = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,6 +56,12 @@ class _GameState extends State<Game> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 22)),
+          Text("Points: $points",
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
+              )),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: GridDisplay(
@@ -72,8 +83,8 @@ class _GameState extends State<Game> {
                                 Tile.fromPiece(piece));
                           }
 
-                          grid.clear();
                           removeOpenPiece(piece);
+                          points += grid.clear();
                         },
                       )
                     },
