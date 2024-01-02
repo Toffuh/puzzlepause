@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_button/sign_in_button.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 import '../../globals/userData.dart';
 
@@ -60,6 +61,19 @@ class Login extends StatelessWidget {
     UserData.getInstance().displayName = userCredential.user?.displayName;
     UserData.getInstance().photoURL = userCredential.user?.photoURL ??
         "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png";
+
+    DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
+    final snapshot = await databaseReference
+        .child("users/${UserData.getInstance().uid}")
+        .get();
+
+    if (!snapshot.exists) {
+      await databaseReference.child("users/${UserData.getInstance().uid}").set({
+        "email": UserData.getInstance().email,
+        "displayName": UserData.getInstance().displayName,
+        "points": 0
+      });
+    }
 
     update();
   }
