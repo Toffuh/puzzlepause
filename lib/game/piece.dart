@@ -18,12 +18,7 @@ class Piece {
       Position(0, 1),
       Position(0, -1),
     ],
-    [
-      Position(0, 0),
-      Position(0, 1),
-      Position(1, 1),
-      Position(1, 0)
-    ],
+    [Position(0, 0), Position(0, 1), Position(1, 1), Position(1, 0)],
     [
       Position(0, -1),
       Position(-1, 0),
@@ -64,7 +59,7 @@ class Piece {
 
   final Color _color;
 
-  late final List<Position> _relativePositions;
+  late List<Position> _relativePositions;
 
   Piece._(this._color, this._relativePositions);
 
@@ -72,11 +67,30 @@ class Piece {
     List<Piece> pieces = [];
 
     for (var i = 0; i < count; i++) {
-      pieces.add(Piece._(pieceColors[Random().nextInt(pieceColors.length)],
-          pieceStructures[Random().nextInt(pieceStructures.length)]));
+      var piece = Piece._(pieceColors[Random().nextInt(pieceColors.length)],
+          pieceStructures[Random().nextInt(pieceStructures.length)]);
+
+      for (var i = 0; i < Random().nextInt(4); i++) {
+        piece.rotate();
+      }
+
+      pieces.add(piece);
     }
 
     return pieces;
+  }
+
+  void rotate() {
+    List<Position> positions = [];
+
+    for (var position in relativePositions) {
+      var newY = -position.x;
+      var newX = -position.y;
+
+      positions.add(Position(newX, newY));
+    }
+
+    _relativePositions = positions;
   }
 
   Color get color => _color;
