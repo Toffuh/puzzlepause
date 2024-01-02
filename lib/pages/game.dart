@@ -78,8 +78,8 @@ class _GameState extends State<Game> {
                                 Tile.fromPiece(piece));
                           }
 
-                          removeOpenPiece(piece);
                           points += grid.clear();
+                          removeOpenPiece(piece);
                         },
                       )
                     },
