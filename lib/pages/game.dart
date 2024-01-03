@@ -66,12 +66,6 @@ class _GameState extends State<Game> {
                 (piece, x, y) => {
                       setState(
                         () {
-                          //validate position
-                          if (!grid.isValidPiece(
-                              piece, x, y, offsetX, offsetY)) {
-                            return;
-                          }
-
                           //set tiles
                           for (var position in piece.relativePositions) {
                             grid.setTile(
