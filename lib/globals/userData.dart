@@ -32,7 +32,7 @@ class UserData {
     sharedPreferences.reload();
   }
 
-  Future<void> clearSharedPreferences() async {
+  Future<void> clear() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
     _uid = null;
@@ -96,8 +96,6 @@ class UserData {
       await databaseReference
           .child("users/${UserData.getInstance().uid}")
           .update({"points": points});
-    } else {
-      print("not updated in db");
     }
   }
 }

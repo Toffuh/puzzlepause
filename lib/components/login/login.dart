@@ -81,8 +81,7 @@ class Login extends StatelessWidget {
           int.parse(snapshot.child("points").value.toString());
 
       if (remoteHighScore > currentHighScore) {
-        UserData.getInstance().points =
-            int.parse(snapshot.child("points").value.toString());
+        UserData.getInstance().points = remoteHighScore;
       } else {
         await databaseReference
             .child("users/${UserData.getInstance().uid}")

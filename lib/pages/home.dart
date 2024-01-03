@@ -24,23 +24,18 @@ class _HomeState extends State<Home> {
 
     String? uid = sharedPreferences.getString("uid");
     UserData.getInstance().uid = uid;
-    print(uid);
 
     String? email = sharedPreferences.getString("email");
     UserData.getInstance().email = email;
-    print(email);
 
     String? displayName = sharedPreferences.getString("displayName");
     UserData.getInstance().displayName = displayName;
-    print(displayName);
 
     String? photoURL = sharedPreferences.getString("photoURL");
     UserData.getInstance().photoURL = photoURL;
-    print(photoURL);
 
     int? points = sharedPreferences.getInt("points");
     UserData.getInstance().points = points ??= 0;
-    print(points);
 
     setState(() {
       loading = false;
@@ -55,11 +50,6 @@ class _HomeState extends State<Home> {
           ? Center(
               child: Column(
                 children: [
-                  Text(UserData.getInstance().points.toString(),
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30)),
                   const Padding(
                       padding: EdgeInsets.all(30),
                       child: Stack(

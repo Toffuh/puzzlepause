@@ -32,7 +32,7 @@ class Logout extends StatelessWidget {
         .signOut();
     FirebaseAuth.instance.signOut();
 
-    UserData.getInstance().clearSharedPreferences();
+    UserData.getInstance().clear();
 
     update();
   }
