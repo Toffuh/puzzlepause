@@ -11,15 +11,18 @@ class PieceDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var tileSize = Tile.getSize(context);
+
     return SizedBox(
-      width: (piece.width() * (Tile.size + 2)).toDouble(),
-      height: (piece.height() * (Tile.size + 2)).toDouble(),
+      width: (piece.width() * (tileSize + 2)).toDouble(),
+      height: (piece.height() * (tileSize + 2)).toDouble(),
       child: Stack(
         children: [
           for (var positions in piece.relativePositions)
             Positioned(
-                left: ((Tile.size + 2) * (positions.x - piece.minX())).toDouble(),
-                top: ((Tile.size + 2) * (positions.y - piece.minY())).toDouble(),
+                left:
+                    ((tileSize + 2) * (positions.x - piece.minX())).toDouble(),
+                top: ((tileSize + 2) * (positions.y - piece.minY())).toDouble(),
                 child: Padding(
                   padding: const EdgeInsets.all(1.0),
                   child: TileDisplay(piece.color, 0, 0),
