@@ -13,17 +13,18 @@ class Leaderboard extends StatefulWidget {
 }
 
 class _LeaderboardState extends State<Leaderboard> {
-  late List<User> userList;
+  late List<User> userList = [];
 
   @override
   void initState() {
-    userList = [];
-    getUsers();
+    fetchUsers();
 
     super.initState();
   }
 
-  getUsers() async {
+  fetchUsers() async {
+    userList.clear();
+
     DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
 
     final snapshot = await databaseReference.child("users").get();
@@ -59,8 +60,7 @@ class _LeaderboardState extends State<Leaderboard> {
           actions: [
             IconButton(
                 onPressed: () {
-                  userList.clear();
-                  getUsers();
+                  fetchUsers();
                 },
                 icon: const Icon(Icons.refresh, color: Colors.white))
           ],

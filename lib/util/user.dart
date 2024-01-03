@@ -1,23 +1,11 @@
 class User {
-  String _name;
-  int _points;
+  String name;
+  int points;
 
-  User(this._name, this._points);
-
-  int get points => _points;
-
-  set points(int value) {
-    _points = value;
-  }
-
-  String get name => _name;
-
-  set name(String value) {
-    _name = value;
-  }
+  User(this.name, this.points);
 
   @override
   String toString() {
-    return 'User{_name: $_name, _points: $_points}';
+    return 'User{_name: $name, _points: $points}';
   }
 }
