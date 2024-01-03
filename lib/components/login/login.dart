@@ -76,13 +76,24 @@ class Login extends StatelessWidget {
         .get();
 
     if (snapshot.exists) {
-      UserData.getInstance().points = int.parse(snapshot.child("points").value.toString());
+      int currentHighScore = UserData.getInstance().points;
+      int remoteHighScore =
+          int.parse(snapshot.child("points").value.toString());
+
+      if (remoteHighScore > currentHighScore) {
+        UserData.getInstance().points =
+            int.parse(snapshot.child("points").value.toString());
+      } else {
+        await databaseReference
+            .child("users/${UserData.getInstance().uid}")
+            .update({"points": currentHighScore});
+      }
     } else {
-        await databaseReference.child("users/${UserData.getInstance().uid}").set({
-          "email": UserData.getInstance().email,
-          "displayName": UserData.getInstance().displayName,
-          "points": UserData.getInstance().points
-        });
+      await databaseReference.child("users/${UserData.getInstance().uid}").set({
+        "email": UserData.getInstance().email,
+        "displayName": UserData.getInstance().displayName,
+        "points": UserData.getInstance().points
+      });
     }
   }
 }
