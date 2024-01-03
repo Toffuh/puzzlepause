@@ -68,4 +68,8 @@ class UserData {
       }
     }
   }
+
+  void addToSharedPreferences() {
+
+  }
 }

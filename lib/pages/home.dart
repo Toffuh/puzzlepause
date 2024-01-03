@@ -22,11 +22,11 @@ class _HomeState extends State<Home> {
   loadData() async {
     sharedPreferences = await SharedPreferences.getInstance();
 
-    List<String>? items = sharedPreferences.getStringList("list");
-    items ??= [];
+    String? data = sharedPreferences.getString("data");
+    data ??= "";
 
-    for (var value in items) {
-      List<String> splitted = value.split(";");
+    if (data.isEmpty) {
+      List<String> splitted = data.split(";");
 
       String uid = splitted[0];
       String email = splitted[1];
