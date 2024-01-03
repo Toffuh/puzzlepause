@@ -43,8 +43,6 @@ class Login extends StatelessWidget {
   }
 
   signInWithGoogle() async {
-    UserData.getInstance().clearSharedPreferences();
-
     //google sign in
     GoogleSignInAccount? googleUser = await GoogleSignIn(
             clientId:
@@ -83,7 +81,7 @@ class Login extends StatelessWidget {
         await databaseReference.child("users/${UserData.getInstance().uid}").set({
           "email": UserData.getInstance().email,
           "displayName": UserData.getInstance().displayName,
-          "points": 0
+          "points": UserData.getInstance().points
         });
     }
   }
