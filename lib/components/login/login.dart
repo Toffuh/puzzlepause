@@ -43,6 +43,7 @@ class Login extends StatelessWidget {
   }
 
   signInWithGoogle() async {
+    //google sign in
     GoogleSignInAccount? googleUser = await GoogleSignIn(
             clientId:
                 "152856632849-6rmn1klasong8617aoigrs1pguvqe04q.apps.googleusercontent.com")
@@ -56,6 +57,7 @@ class Login extends StatelessWidget {
     UserCredential userCredential =
         await FirebaseAuth.instance.signInWithCredential(authCredential);
 
+
     UserData.getInstance().uid = userCredential.user?.uid;
     UserData.getInstance().email = userCredential.user?.email;
     UserData.getInstance().displayName = userCredential.user?.displayName;
@@ -63,6 +65,13 @@ class Login extends StatelessWidget {
         "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png";
 
     //add to firebase db
+    await addToFirebaseDB();
+
+    //build main loginpage new
+    update();
+  }
+
+  addToFirebaseDB() async {
     DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
     final snapshot = await databaseReference
         .child("users/${UserData.getInstance().uid}")
@@ -75,7 +84,5 @@ class Login extends StatelessWidget {
         "points": 0
       });
     }
-
-    update();
   }
 }

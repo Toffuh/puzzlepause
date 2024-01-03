@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserData {
   String? _uid;
@@ -6,6 +7,8 @@ class UserData {
   String? _displayName;
   late String _photoURL;
   late int _points;
+
+  late SharedPreferences _sharedPreferences;
 
   static UserData? _instance;
 
@@ -19,30 +22,56 @@ class UserData {
     _photoURL =
         "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png";
     _points = 0;
+
+    _initSharedPreferences();
+  }
+
+  void _initSharedPreferences() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+  }
+
+  Future<void> _updateSharedPreferences(String key, dynamic value) async {
+    if (value is int) {
+      await _sharedPreferences.setInt(key, value);
+    } else if (value is String) {
+      await _sharedPreferences.setString(key, value);
+    }
+  }
+
+  dynamic getSharedPreferencesValue(String key) {
+    return _sharedPreferences.get(key);
   }
 
   String get photoURL => _photoURL;
 
   set photoURL(String value) {
     _photoURL = value;
+
+    _updateSharedPreferences("photoURL", value);
   }
 
   String? get displayName => _displayName;
 
   set displayName(String? value) {
     _displayName = value;
+
+    _updateSharedPreferences("displayName", value);
   }
 
   String? get email => _email;
 
   set email(String? value) {
     _email = value;
+
+    _updateSharedPreferences("email", value);
   }
 
   String? get uid => _uid;
 
   set uid(String? value) {
     _uid = value;
+
+    _updateSharedPreferences("uid", value);
   }
 
   int get points => _points;
@@ -51,6 +80,7 @@ class UserData {
     _points = value;
 
     pointsDBUpdate();
+    _updateSharedPreferences("points", value);
   }
 
   void pointsDBUpdate() async {
@@ -69,7 +99,4 @@ class UserData {
     }
   }
 
-  void addToSharedPreferences() {
-
-  }
 }
