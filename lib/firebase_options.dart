@@ -52,6 +52,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '152856632849',
     projectId: 'puzzlepause-fe548',
     authDomain: 'puzzlepause-fe548.firebaseapp.com',
+    databaseURL: 'https://puzzlepause-fe548-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'puzzlepause-fe548.appspot.com',
     measurementId: 'G-7G4MREVM8Q',
   );
@@ -61,6 +62,7 @@ class DefaultFirebaseOptions {
     appId: '1:152856632849:android:b33dd63605143731ec9bb0',
     messagingSenderId: '152856632849',
     projectId: 'puzzlepause-fe548',
+    databaseURL: 'https://puzzlepause-fe548-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'puzzlepause-fe548.appspot.com',
   );
 
@@ -69,6 +71,7 @@ class DefaultFirebaseOptions {
     appId: '1:152856632849:ios:eb1f76830d2d17c9ec9bb0',
     messagingSenderId: '152856632849',
     projectId: 'puzzlepause-fe548',
+    databaseURL: 'https://puzzlepause-fe548-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'puzzlepause-fe548.appspot.com',
     androidClientId: '152856632849-glsksgnc7ji0m7cnin6qqn297999vmaq.apps.googleusercontent.com',
     iosClientId: '152856632849-rn3vrtn602kvo7jaur8bm3iauhm5k4jo.apps.googleusercontent.com',
