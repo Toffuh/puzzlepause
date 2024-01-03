@@ -43,6 +43,8 @@ class Login extends StatelessWidget {
   }
 
   signInWithGoogle() async {
+    UserData.getInstance().clearSharedPreferences();
+
     //google sign in
     GoogleSignInAccount? googleUser = await GoogleSignIn(
             clientId:
@@ -57,32 +59,32 @@ class Login extends StatelessWidget {
     UserCredential userCredential =
         await FirebaseAuth.instance.signInWithCredential(authCredential);
 
-
     UserData.getInstance().uid = userCredential.user?.uid;
     UserData.getInstance().email = userCredential.user?.email;
     UserData.getInstance().displayName = userCredential.user?.displayName;
-    UserData.getInstance().photoURL = userCredential.user?.photoURL ??
-        "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png";
+    UserData.getInstance().photoURL = userCredential.user!.photoURL!;
 
     //add to firebase db
-    await addToFirebaseDB();
+    await addToFirebaseDB(userCredential);
 
     //build main loginpage new
     update();
   }
 
-  addToFirebaseDB() async {
+  addToFirebaseDB(UserCredential userCredential) async {
     DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
     final snapshot = await databaseReference
         .child("users/${UserData.getInstance().uid}")
         .get();
 
-    if (!snapshot.exists) {
-      await databaseReference.child("users/${UserData.getInstance().uid}").set({
-        "email": UserData.getInstance().email,
-        "displayName": UserData.getInstance().displayName,
-        "points": 0
-      });
+    if (snapshot.exists) {
+      UserData.getInstance().points = int.parse(snapshot.child("points").value.toString());
+    } else {
+        await databaseReference.child("users/${UserData.getInstance().uid}").set({
+          "email": UserData.getInstance().email,
+          "displayName": UserData.getInstance().displayName,
+          "points": 0
+        });
     }
   }
 }

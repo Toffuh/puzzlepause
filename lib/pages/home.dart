@@ -22,22 +22,25 @@ class _HomeState extends State<Home> {
   loadData() async {
     sharedPreferences = await SharedPreferences.getInstance();
 
-    String? data = sharedPreferences.getString("data");
-    data ??= "";
+    String? uid = sharedPreferences.getString("uid");
+    UserData.getInstance().uid = uid;
+    print(uid);
 
-    if (data.isEmpty) {
-      List<String> splitted = data.split(";");
+    String? email = sharedPreferences.getString("email");
+    UserData.getInstance().email = email;
+    print(email);
 
-      String uid = splitted[0];
-      String email = splitted[1];
-      String displayName = splitted[2];
-      String photoURL = splitted[3];
+    String? displayName = sharedPreferences.getString("displayName");
+    UserData.getInstance().displayName = displayName;
+    print(displayName);
 
-      UserData.getInstance().uid = uid;
-      UserData.getInstance().email = email;
-      UserData.getInstance().displayName = displayName;
-      UserData.getInstance().photoURL = photoURL;
-    }
+    String? photoURL = sharedPreferences.getString("photoURL");
+    UserData.getInstance().photoURL = photoURL;
+    print(photoURL);
+
+    int? points = sharedPreferences.getInt("points");
+    UserData.getInstance().points = points ??= 0;
+    print(points);
 
     setState(() {
       loading = false;
@@ -52,6 +55,11 @@ class _HomeState extends State<Home> {
           ? Center(
               child: Column(
                 children: [
+                  Text(UserData.getInstance().points.toString(),
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30)),
                   const Padding(
                       padding: EdgeInsets.all(30),
                       child: Stack(

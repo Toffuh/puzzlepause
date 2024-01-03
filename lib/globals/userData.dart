@@ -5,10 +5,8 @@ class UserData {
   String? _uid;
   String? _email;
   String? _displayName;
-  late String _photoURL;
+  String? _photoURL;
   late int _points;
-
-  late SharedPreferences _sharedPreferences;
 
   static UserData? _instance;
 
@@ -19,32 +17,36 @@ class UserData {
   }
 
   UserData._() {
-    _photoURL =
-        "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png";
     _points = 0;
-
-    _initSharedPreferences();
-  }
-
-  void _initSharedPreferences() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
   }
 
   Future<void> _updateSharedPreferences(String key, dynamic value) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
     if (value is int) {
-      await _sharedPreferences.setInt(key, value);
+      await sharedPreferences.setInt(key, value);
     } else if (value is String) {
-      await _sharedPreferences.setString(key, value);
+      await sharedPreferences.setString(key, value);
     }
+
+    sharedPreferences.reload();
   }
 
-  dynamic getSharedPreferencesValue(String key) {
-    return _sharedPreferences.get(key);
+  Future<void> clearSharedPreferences() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    _uid = null;
+    _email = null;
+    _displayName = null;
+    _photoURL = null;
+    _points = 0;
+
+    sharedPreferences.clear();
   }
 
-  String get photoURL => _photoURL;
+  String? get photoURL => _photoURL;
 
-  set photoURL(String value) {
+  set photoURL(String? value) {
     _photoURL = value;
 
     _updateSharedPreferences("photoURL", value);
@@ -91,12 +93,11 @@ class UserData {
         .get();
 
     if (snapshot.exists) {
-      if (points > int.parse(snapshot.value.toString())) {
-        await databaseReference
-            .child("users/${UserData.getInstance().uid}")
-            .update({"points": points});
-      }
+      await databaseReference
+          .child("users/${UserData.getInstance().uid}")
+          .update({"points": points});
+    } else {
+      print("not updated in db");
     }
   }
-
 }

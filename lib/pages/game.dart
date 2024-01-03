@@ -126,7 +126,10 @@ class _GameState extends State<Game> {
     if (checkLost()) {
       hasLost = true;
 
-      UserData.getInstance().points = points;
+      int currentHighScore = UserData.getInstance().points;
+      if (points > currentHighScore) {
+        UserData.getInstance().points = points;
+      }
     }
   }
 
