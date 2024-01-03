@@ -28,15 +28,6 @@ class _GridDisplayState extends State<GridDisplay> {
   List<Position> _selected = [];
   Color? selectedColor;
 
-  bool isUpdate = false;
-
-  void update() {
-    Timer(Duration.zero, () {
-      isUpdate = true;
-      setState(() {});
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     var render = Column(
@@ -49,28 +40,6 @@ class _GridDisplayState extends State<GridDisplay> {
                 DragTarget<Piece>(
                   builder: (BuildContext context, List<Piece?> candidateData,
                       List<dynamic> rejectedData) {
-                    if (candidateData.isNotEmpty) {
-                      if (!isUpdate) {
-                        var piece = candidateData.elementAtOrNull(0)!;
-
-                        if (widget._grid.isValidPiece(
-                            piece, x, y, widget._offsetX, widget._offsetY)) {
-                          //set tile
-                          for (var position in piece.relativePositions) {
-                            _selected.add(Position(
-                                position.getGridX(x, piece, widget._offsetX),
-                                position.getGridY(y, piece, widget._offsetY)));
-                          }
-
-                          selectedColor = piece.color.withOpacity(0.5);
-
-                          update();
-                        }
-                      } else {
-                        isUpdate = false;
-                      }
-                    }
-
                     Color? color = widget._grid.getTile(x, y)?.color;
 
                     if (_selected.contains(Position(x, y))) {
@@ -78,6 +47,27 @@ class _GridDisplayState extends State<GridDisplay> {
                     }
 
                     return TileDisplay(color, x, y);
+                  },
+                  onWillAccept: (piece) {
+                    if (piece != null) {
+                      if (!widget._grid.isValidPiece(
+                          piece, x, y, widget._offsetX, widget._offsetY)) {
+                        return false;
+                      }
+
+                      //set tile
+                      for (var position in piece.relativePositions) {
+                        _selected.add(Position(
+                            position.getGridX(x, piece, widget._offsetX),
+                            position.getGridY(y, piece, widget._offsetY)));
+                      }
+
+                      selectedColor = piece.color.withOpacity(0.5);
+
+                      setState(() {});
+                    }
+
+                    return true;
                   },
                   onAccept: (data) {
                     _selected = [];
@@ -88,7 +78,7 @@ class _GridDisplayState extends State<GridDisplay> {
                     _selected = [];
                     selectedColor = null;
 
-                    update();
+                    setState(() {});
                   },
                 )
             ],
