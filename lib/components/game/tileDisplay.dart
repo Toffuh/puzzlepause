@@ -12,29 +12,31 @@ class TileDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var tileSize = Tile.getSize(context);
+
     return Padding(
       padding: const EdgeInsets.all(1.0),
       child: SizedBox(
-          height: Tile.size.toDouble(),
-          width: Tile.size.toDouble(),
+          height: tileSize,
+          width: tileSize,
           child: Stack(
             children: [
               Container(
                 decoration: BoxDecoration(
                     color: getSecondaryColor(),
-                    borderRadius: const BorderRadius.all(
-                        Radius.circular(Tile.size * 0.1))),
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(tileSize * 0.1))),
               ),
               Positioned(
-                left: Tile.size.toDouble() * 0.05,
+                left: tileSize * 0.05,
                 child: SizedBox(
-                  height: Tile.size.toDouble() * 0.9,
-                  width: Tile.size.toDouble() * 0.9,
+                  height: tileSize * 0.9,
+                  width: tileSize * 0.9,
                   child: Container(
                     decoration: BoxDecoration(
                         color: getMainColor(),
-                        borderRadius: const BorderRadius.all(
-                            Radius.circular(Tile.size * 0.1))),
+                        borderRadius:
+                            BorderRadius.all(Radius.circular(tileSize * 0.1))),
                   ),
                 ),
               )

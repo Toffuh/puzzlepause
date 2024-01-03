@@ -43,6 +43,8 @@ class _GameState extends State<Game> {
 
   @override
   Widget build(BuildContext context) {
+    var tileSize = Tile.getSize(context);
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 31, 16, 42),
       body: Column(
@@ -101,10 +103,8 @@ class _GameState extends State<Game> {
                       child: Listener(
                           onPointerDown: (details) {
                             setState(() {
-                              offsetX = details.localPosition.dx ~/
-                                  Tile.size.toDouble();
-                              offsetY = details.localPosition.dy ~/
-                                  Tile.size.toDouble();
+                              offsetX = details.localPosition.dx ~/ tileSize;
+                              offsetY = details.localPosition.dy ~/ tileSize;
                             });
                           },
                           child: PieceDisplay(piece))),
