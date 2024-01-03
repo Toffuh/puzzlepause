@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:puzzelpause/components/game/gridDisplay.dart';
@@ -9,6 +10,7 @@ import 'package:puzzelpause/game/grid.dart';
 import 'package:puzzelpause/game/tile.dart';
 
 import '../game/piece.dart';
+import '../globals/userData.dart';
 
 class Game extends StatefulWidget {
   const Game({super.key});
@@ -123,6 +125,8 @@ class _GameState extends State<Game> {
 
     if (checkLost()) {
       hasLost = true;
+
+      UserData.getInstance().points = points;
     }
   }
 
