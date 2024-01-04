@@ -78,6 +78,7 @@ class _GridDisplayState extends State<GridDisplay> {
                       selectedColor = Colors.black;
                     }
 
+                    setState(() {});
                     return true;
                   },
                   onAccept: (data) {
