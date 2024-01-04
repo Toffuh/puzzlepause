@@ -41,7 +41,7 @@ class _AuthState extends State<Auth> {
               width: 40,
               alignment: Alignment.topRight,
               child: Image.network(
-                UserData.getInstance().photoURL,
+                UserData.getInstance().photoURL ??= "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png",
                 fit: BoxFit.cover,
               ),
             ),

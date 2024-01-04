@@ -43,6 +43,7 @@ class Login extends StatelessWidget {
   }
 
   signInWithGoogle() async {
+    //google sign in
     GoogleSignInAccount? googleUser = await GoogleSignIn(
             clientId:
                 "152856632849-6rmn1klasong8617aoigrs1pguvqe04q.apps.googleusercontent.com")
@@ -59,23 +60,39 @@ class Login extends StatelessWidget {
     UserData.getInstance().uid = userCredential.user?.uid;
     UserData.getInstance().email = userCredential.user?.email;
     UserData.getInstance().displayName = userCredential.user?.displayName;
-    UserData.getInstance().photoURL = userCredential.user?.photoURL ??
-        "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png";
+    UserData.getInstance().photoURL = userCredential.user!.photoURL!;
 
     //add to firebase db
+    await addToFirebaseDB(userCredential);
+
+    //build main loginpage new
+    update();
+  }
+
+  addToFirebaseDB(UserCredential userCredential) async {
     DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
     final snapshot = await databaseReference
         .child("users/${UserData.getInstance().uid}")
         .get();
 
-    if (!snapshot.exists) {
+    if (snapshot.exists) {
+      int currentHighScore = UserData.getInstance().points;
+      int remoteHighScore =
+          int.parse(snapshot.child("points").value.toString());
+
+      if (remoteHighScore > currentHighScore) {
+        UserData.getInstance().points = remoteHighScore;
+      } else {
+        await databaseReference
+            .child("users/${UserData.getInstance().uid}")
+            .update({"points": currentHighScore});
+      }
+    } else {
       await databaseReference.child("users/${UserData.getInstance().uid}").set({
         "email": UserData.getInstance().email,
         "displayName": UserData.getInstance().displayName,
-        "points": 0
+        "points": UserData.getInstance().points
       });
     }
-
-    update();
   }
 }

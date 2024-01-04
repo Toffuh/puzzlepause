@@ -32,11 +32,7 @@ class Logout extends StatelessWidget {
         .signOut();
     FirebaseAuth.instance.signOut();
 
-    UserData.getInstance().uid = null;
-    UserData.getInstance().email = null;
-    UserData.getInstance().displayName = null;
-    UserData.getInstance().photoURL =
-        "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png";
+    UserData.getInstance().clear();
 
     update();
   }

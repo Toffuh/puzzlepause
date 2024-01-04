@@ -1,10 +1,11 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserData {
   String? _uid;
   String? _email;
   String? _displayName;
-  late String _photoURL;
+  String? _photoURL;
   late int _points;
 
   static UserData? _instance;
@@ -16,33 +17,63 @@ class UserData {
   }
 
   UserData._() {
-    _photoURL =
-        "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png";
     _points = 0;
   }
 
-  String get photoURL => _photoURL;
+  Future<void> _updateSharedPreferences(String key, dynamic value) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
-  set photoURL(String value) {
+    if (value is int) {
+      await sharedPreferences.setInt(key, value);
+    } else if (value is String) {
+      await sharedPreferences.setString(key, value);
+    }
+
+    sharedPreferences.reload();
+  }
+
+  Future<void> clear() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    _uid = null;
+    _email = null;
+    _displayName = null;
+    _photoURL = null;
+    _points = 0;
+
+    sharedPreferences.clear();
+  }
+
+  String? get photoURL => _photoURL;
+
+  set photoURL(String? value) {
     _photoURL = value;
+
+    _updateSharedPreferences("photoURL", value);
   }
 
   String? get displayName => _displayName;
 
   set displayName(String? value) {
     _displayName = value;
+
+    _updateSharedPreferences("displayName", value);
   }
 
   String? get email => _email;
 
   set email(String? value) {
     _email = value;
+
+    _updateSharedPreferences("email", value);
   }
 
   String? get uid => _uid;
 
   set uid(String? value) {
     _uid = value;
+
+    _updateSharedPreferences("uid", value);
   }
 
   int get points => _points;
@@ -51,6 +82,7 @@ class UserData {
     _points = value;
 
     pointsDBUpdate();
+    _updateSharedPreferences("points", value);
   }
 
   void pointsDBUpdate() async {
@@ -61,11 +93,9 @@ class UserData {
         .get();
 
     if (snapshot.exists) {
-      if (points > int.parse(snapshot.value.toString())) {
-        await databaseReference
-            .child("users/${UserData.getInstance().uid}")
-            .update({"points": points});
-      }
+      await databaseReference
+          .child("users/${UserData.getInstance().uid}")
+          .update({"points": points});
     }
   }
 }
