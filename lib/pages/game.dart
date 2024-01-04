@@ -238,7 +238,27 @@ class _GameState extends State<Game> {
                 offsetY = details.localPosition.dy ~/ tileSize;
               });
             },
-            child: PieceDisplay(piece)));
+            child: Stack(children: [
+              PieceDisplay(piece),
+              Positioned(
+                  right: 0,
+                  bottom: 0,
+                  child: SizedBox(
+                    height: tileSize * 0.5,
+                    width: tileSize * 0.5,
+                    child: Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: const BoxDecoration(
+                            color: Colors.black,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50))),
+                        child: Center(
+                            child: Text(
+                          "$singleTileCount",
+                          style: const TextStyle(color: Colors.white),
+                        ))),
+                  ))
+            ])));
   }
 
   void getRandomPowerup() {
