@@ -95,7 +95,13 @@ class _GameState extends State<Game> {
                                   Tile.fromPiece(piece));
                             }
 
-                            points += grid.clear();
+                            var clearCount = grid.clear();
+
+                            points += clearCount * 3;
+
+                            if (clearCount > 0) {
+                              getRandomPowerup();
+                            }
 
                             if (piece is SingleTile) {
                               singleTileCount--;
@@ -233,5 +239,14 @@ class _GameState extends State<Game> {
               });
             },
             child: PieceDisplay(piece)));
+  }
+
+  void getRandomPowerup() {
+    switch (Random().nextInt(2)) {
+      case 0:
+        bombCount++;
+      case 1:
+        singleTileCount++;
+    }
   }
 }
