@@ -1,9 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:puzzelpause/game/grid_placeable.dart';
 
 import '../util/position.dart';
 
-class Piece {
+class Piece extends GridPlaceable {
   static final List<List<Position>> pieceStructures = [
     [
       Position(0, 0),
@@ -62,6 +63,10 @@ class Piece {
   late List<Position> _relativePositions;
 
   Piece._(this._color, this._relativePositions);
+
+  Piece.singleTile(this._color) {
+    _relativePositions = [Position(0, 0)];
+  }
 
   static List<Piece> generateRandomPieces(int count) {
     List<Piece> pieces = [];

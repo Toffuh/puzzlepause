@@ -18,7 +18,7 @@ class Grid {
     return _gameField[x][y];
   }
 
-  void setTile(int x, int y, Tile tile) {
+  void setTile(int x, int y, Tile? tile) {
     _gameField[x][y] = tile;
   }
 

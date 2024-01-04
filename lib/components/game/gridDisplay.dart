@@ -5,14 +5,16 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:puzzelpause/components/game/tileDisplay.dart';
+import 'package:puzzelpause/game/grid_placeable.dart';
 import 'package:puzzelpause/util/position.dart';
 
+import '../../game/bomb.dart';
 import '../../game/grid.dart';
 import '../../game/piece.dart';
 
 class GridDisplay extends StatefulWidget {
   final Grid _grid;
-  final Function(Piece piece, int x, int y) _onAccept;
+  final Function(GridPlaceable object, int x, int y) _onAccept;
 
   final int _offsetX;
   final int _offsetY;
@@ -37,8 +39,9 @@ class _GridDisplayState extends State<GridDisplay> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               for (var x = 0; x < Grid.size; x++)
-                DragTarget<Piece>(
-                  builder: (BuildContext context, List<Piece?> candidateData,
+                DragTarget<GridPlaceable>(
+                  builder: (BuildContext context,
+                      List<GridPlaceable?> candidateData,
                       List<dynamic> rejectedData) {
                     Color? color = widget._grid.getTile(x, y)?.color;
 
@@ -48,8 +51,10 @@ class _GridDisplayState extends State<GridDisplay> {
 
                     return TileDisplay(color, x, y);
                   },
-                  onWillAccept: (piece) {
-                    if (piece != null) {
+                  onWillAccept: (object) {
+                    if (object is Piece) {
+                      var piece = object;
+
                       if (!widget._grid.isValidPiece(
                           piece, x, y, widget._offsetX, widget._offsetY)) {
                         return false;
@@ -63,8 +68,14 @@ class _GridDisplayState extends State<GridDisplay> {
                       }
 
                       selectedColor = piece.color.withOpacity(0.5);
+                    } else if (object is Bomb) {
+                      for (var offsetX = -1; offsetX <= 1; offsetX++) {
+                        for (var offsetY = -1; offsetY <= 1; offsetY++) {
+                          _selected.add(Position(x + offsetX, y + offsetY));
+                        }
+                      }
 
-                      setState(() {});
+                      selectedColor = Colors.black;
                     }
 
                     return true;

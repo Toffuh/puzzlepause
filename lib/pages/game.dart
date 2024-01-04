@@ -3,12 +3,15 @@ import 'dart:math';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:puzzelpause/components/game/gridDisplay.dart';
 import 'package:puzzelpause/components/game/pieceDisplay.dart';
 import 'package:puzzelpause/game/grid.dart';
+import 'package:puzzelpause/game/single_tile.dart';
 import 'package:puzzelpause/game/tile.dart';
 
+import '../game/bomb.dart';
 import '../game/piece.dart';
 import '../globals/userData.dart';
 
@@ -27,9 +30,16 @@ class _GameState extends State<Game> {
 
   bool hasLost = false;
 
+  //powerups
+  int bombCount = 0;
+  int singleTileCount = 0;
+
   @override
   void initState() {
     grid = Grid();
+
+    bombCount = 1;
+    singleTileCount = 1;
 
     openPieces = Piece.generateRandomPieces(3);
 
@@ -49,6 +59,13 @@ class _GameState extends State<Game> {
       backgroundColor: const Color.fromARGB(255, 31, 16, 42),
       body: Column(
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (bombCount > 0) bombIcon(),
+              if (singleTileCount > 0) singleTileIcon()
+            ],
+          ),
           if (hasLost)
             const Text("You have lost...",
                 style: TextStyle(
@@ -65,19 +82,35 @@ class _GameState extends State<Game> {
             padding: const EdgeInsets.all(20.0),
             child: GridDisplay(
                 grid,
-                (piece, x, y) => {
+                (object, x, y) => {
                       setState(
                         () {
-                          //set tiles
-                          for (var position in piece.relativePositions) {
-                            grid.setTile(
-                                position.getGridX(x, piece, offsetX),
-                                position.getGridY(y, piece, offsetY),
-                                Tile.fromPiece(piece));
-                          }
+                          if (object is Piece) {
+                            var piece = object;
+                            //set tiles
+                            for (var position in piece.relativePositions) {
+                              grid.setTile(
+                                  position.getGridX(x, piece, offsetX),
+                                  position.getGridY(y, piece, offsetY),
+                                  Tile.fromPiece(piece));
+                            }
 
-                          points += grid.clear();
-                          removeOpenPiece(piece);
+                            points += grid.clear();
+
+                            if (piece is SingleTile) {
+                              singleTileCount--;
+                            } else {
+                              removeOpenPiece(piece);
+                            }
+                          } else if (object is Bomb) {
+                            bombCount--;
+
+                            for (var offsetX = -1; offsetX <= 1; offsetX++) {
+                              for (var offsetY = -1; offsetY <= 1; offsetY++) {
+                                grid.setTile(x + offsetX, y + offsetY, null);
+                              }
+                            }
+                          }
                         },
                       )
                     },
@@ -136,5 +169,69 @@ class _GameState extends State<Game> {
     }
 
     return true;
+  }
+
+  Widget bombIcon() {
+    var tileSize = Tile.getSize(context);
+
+    var bombIcon = Container(
+      padding: const EdgeInsets.all(5),
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(50))),
+      child: const Image(
+          image: NetworkImage(
+              "https://cdn3.iconfinder.com/data/icons/streamline-icon-set-free-pack/48/Streamline-02-256.png")),
+    );
+
+    return Draggable(
+      data: Bomb(),
+      feedback: SizedBox(
+        height: tileSize,
+        width: tileSize,
+        child: bombIcon,
+      ),
+      child: SizedBox(
+        height: tileSize,
+        width: tileSize,
+        child: Stack(children: [
+          bombIcon,
+          Positioned(
+              right: 0,
+              bottom: 0,
+              child: SizedBox(
+                height: tileSize * 0.5,
+                width: tileSize * 0.5,
+                child: Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: const BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.all(Radius.circular(50))),
+                    child: Center(
+                        child: Text(
+                      "$bombCount",
+                      style: const TextStyle(color: Colors.white),
+                    ))),
+              ))
+        ]),
+      ),
+    );
+  }
+
+  Widget singleTileIcon() {
+    var tileSize = Tile.getSize(context);
+    var piece = SingleTile.singleTile(Colors.blueGrey);
+
+    return Draggable<Piece>(
+        data: piece,
+        feedback: PieceDisplay(piece),
+        child: Listener(
+            onPointerDown: (details) {
+              setState(() {
+                offsetX = details.localPosition.dx ~/ tileSize;
+                offsetY = details.localPosition.dy ~/ tileSize;
+              });
+            },
+            child: PieceDisplay(piece)));
   }
 }
