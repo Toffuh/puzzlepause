@@ -47,6 +47,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 31, 16, 42),
       appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: const Color.fromARGB(255, 31, 16, 42),
           title: const Center(
             child: Text("PuzzlePause",
