@@ -55,13 +55,17 @@ class _GameState extends State<Game> {
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 31, 16, 42),
-      body: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(20.0),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 31, 16, 42),
+        toolbarHeight: 100,
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
+              flex: 2,
+              child: Container(
+                alignment: Alignment.centerLeft,
                 child: Text("Punkte: $points",
                     style: const TextStyle(
                       color: Colors.white,
@@ -69,28 +73,42 @@ class _GameState extends State<Game> {
                       fontSize: 30,
                     )),
               ),
-              Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: IconButton(
-                      onPressed: () => endGame(),
-                      icon: const Icon(Icons.highlight_remove_sharp,
-                          size: 50, color: Colors.white)))
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (bombCount > 0)
-                Padding(padding: const EdgeInsets.all(20.0), child: bombIcon()),
-              if (singleTileCount > 0)
-                Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: singleTileIcon()),
-              if (refreshCount > 0)
-                Padding(
-                    padding: const EdgeInsets.all(20.0), child: refreshIcon())
-            ],
-          ),
+            ),
+            Expanded(
+              flex: 3,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  if (bombCount > 0)
+                    Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: bombIcon()),
+                  if (singleTileCount > 0)
+                    Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: singleTileIcon()),
+                  if (refreshCount > 0)
+                    Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: refreshIcon())
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Container(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                  icon: const Icon(Icons.highlight_remove_sharp, size: 50, color: Colors.white),
+                  onPressed: () => endGame(),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: Column(
+        children: [
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: GridDisplay(
