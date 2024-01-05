@@ -58,25 +58,39 @@ class _GameState extends State<Game> {
       body: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (bombCount > 0) bombIcon(),
-              if (singleTileCount > 0) singleTileIcon(),
-              if (refreshCount > 0) refreshIcon()
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Text("Punkte: $points",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30,
+                    )),
+              ),
+              Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: IconButton(
+                      onPressed: () => endGame(),
+                      icon: const Icon(Icons.highlight_remove_sharp,
+                          size: 50, color: Colors.white)))
             ],
           ),
-          if (hasLost)
-            const Text("You have lost...",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 22)),
-          Text("Points: $points",
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
-              )),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (bombCount > 0)
+                Padding(padding: const EdgeInsets.all(20.0), child: bombIcon()),
+              if (singleTileCount > 0)
+                Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: singleTileIcon()),
+              if (refreshCount > 0)
+                Padding(
+                    padding: const EdgeInsets.all(20.0), child: refreshIcon())
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: GridDisplay(
@@ -148,6 +162,57 @@ class _GameState extends State<Game> {
     );
   }
 
+  Future<bool> showGameEndDialog() async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Aufgeben?"),
+          content: const Text("Möchtest du aufhören?"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                hasLost = true;
+                Navigator.of(context).pop();
+              },
+              child: const Text("JA"),
+            ),
+            TextButton(
+              onPressed: () {
+                hasLost = false;
+                Navigator.of(context).pop();
+              },
+              child: const Text("NEIN"),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (hasLost) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  endGame() async {
+    bool gameEnd = await showGameEndDialog();
+
+    if (gameEnd) {
+      print("added to db");
+      int currentHighScore = UserData.getInstance().points;
+
+      if (points > currentHighScore) {
+        UserData.getInstance().points = points;
+      }
+
+      Navigator.pushNamed(context, "/leaderboard");
+    } else {
+      print("not added to db");
+    }
+  }
+
   void removeOpenPiece(Piece piece) {
     openPieces.remove(piece);
 
@@ -156,12 +221,7 @@ class _GameState extends State<Game> {
     }
 
     if (checkLost()) {
-      hasLost = true;
-
-      int currentHighScore = UserData.getInstance().points;
-      if (points > currentHighScore) {
-        UserData.getInstance().points = points;
-      }
+      endGame();
     }
   }
 
