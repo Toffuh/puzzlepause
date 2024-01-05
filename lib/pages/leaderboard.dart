@@ -34,6 +34,8 @@ class _LeaderboardState extends State<Leaderboard> {
       userList.add(User(value["displayName"], value["points"]));
     });
 
+    userList.sort((a, b) => b.points.compareTo(a.points));
+
     setState(() {});
   }
 
@@ -65,23 +67,34 @@ class _LeaderboardState extends State<Leaderboard> {
                 icon: const Icon(Icons.refresh, color: Colors.white))
           ],
         ),
-        body: Center(
-          child: Column(
-            children: [
-              for (var value in userList)
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text(
-                    "${value.name} -> ${value.points} Punkte",
+        body: ListView.builder(
+          itemCount: userList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Center(
+              child: SizedBox(
+                width: 400,
+                child: ListTile(
+                  leading: CircleAvatar(
+                    child: Text((index + 1).toString()),
+                  ),
+                  title: Text(userList[index].name,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      )),
+                  trailing: Text(
+                    userList[index].points.toString(),
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
                   ),
-                )
-            ],
-          ),
+                ),
+              ),
+            );
+          },
         ));
   }
 }
