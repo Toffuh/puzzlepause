@@ -36,6 +36,14 @@ class _LeaderboardState extends State<Leaderboard> {
       userList.add(User(value["displayName"], key, value["points"]));
     });
 
+    // for (var i = 0; i < 20; i++) {
+    //   userList.add(User("name", "uid", 20));
+    // }
+    //
+    // for (var i = 0; i < 20; i++) {
+    //   userList.add(User("name", "uid", 2));
+    // }
+
     userList.sort((a, b) => b.points.compareTo(a.points));
 
     setState(() {});
@@ -50,7 +58,7 @@ class _LeaderboardState extends State<Leaderboard> {
 
     if (highlightedIndex != -1) {
       _scrollController.animateTo(
-        highlightedIndex * 30,
+        highlightedIndex * 45, //help wie berchne ich das D:
         duration: const Duration(seconds: 1),
         curve: Curves.easeInOut,
       );
@@ -99,7 +107,6 @@ class _LeaderboardState extends State<Leaderboard> {
                     color: highlight ? Colors.amberAccent : Colors.transparent),
                 child: SizedBox(
                   width: 400,
-                  height: 50,
                   child: ListTile(
                     leading: CircleAvatar(
                       child: Text((index + 1).toString()),
