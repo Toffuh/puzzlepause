@@ -10,7 +10,7 @@ class Grid {
     _gameField = List.generate(
       size,
       growable: false,
-          (index) => List.generate(size, growable: false, (index) => null),
+      (index) => List.generate(size, growable: false, (index) => null),
     );
   }
 
@@ -25,6 +25,10 @@ class Grid {
   int clear() {
     int clearCount = 0;
 
+    List<List<Tile?>> copy = [
+      for (var sublist in _gameField) [...sublist]
+    ];
+
     //columns
     outer:
     for (var x = 0; x < size; x++) {
@@ -36,7 +40,7 @@ class Grid {
 
       clearCount++;
 
-      _gameField[x] = List.generate(size, growable: false, (index) => null);
+      copy[x] = List.generate(size, growable: false, (index) => null);
     }
 
     //rows
@@ -51,7 +55,7 @@ class Grid {
       clearCount++;
 
       for (var x = 0; x < size; x++) {
-        _gameField[x][y] = null;
+        copy[x][y] = null;
       }
     }
 
@@ -72,12 +76,13 @@ class Grid {
 
         for (var x = 0; x < 3; x++) {
           for (var y = 0; y < 3; y++) {
-            _gameField[quadX * 3 + x][quadY * 3 + y] = null;
+            copy[quadX * 3 + x][quadY * 3 + y] = null;
           }
         }
       }
     }
 
+    _gameField = copy;
     return clearCount;
   }
 
