@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:github_sign_in/github_sign_in.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -23,7 +24,9 @@ class Login extends StatelessWidget {
               child: SignInButton(
                 Buttons.gitHub,
                 text: "Anmelden mit GitHub",
-                onPressed: () {},
+                onPressed: () {
+                  signInWithGitHub(context);
+                },
               ),
             ),
             Padding(
@@ -53,6 +56,33 @@ class Login extends StatelessWidget {
 
     AuthCredential authCredential = GoogleAuthProvider.credential(
         accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
+
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(authCredential);
+
+    UserData.getInstance().uid = userCredential.user?.uid;
+    UserData.getInstance().email = userCredential.user?.email;
+    UserData.getInstance().displayName = userCredential.user?.displayName;
+    UserData.getInstance().photoURL = userCredential.user!.photoURL!;
+
+    //add to firebase db
+    await addToFirebaseDB(userCredential);
+
+    //build main loginpage new
+    update();
+  }
+
+  signInWithGitHub(BuildContext context) async {
+    final GitHubSignIn gitHubSignIn = GitHubSignIn(
+        clientId: "a05c47ed7ace610ddcf7",
+        clientSecret: "5b6ab5c4af723b0ef4d9642177cb789702e2ed02",
+        redirectUrl:
+            "https://puzzlepause-fe548.firebaseapp.com/__/auth/handler");
+
+    final result = await gitHubSignIn.signIn(context);
+
+    AuthCredential authCredential =
+        GithubAuthProvider.credential(result.token!);
 
     UserCredential userCredential =
         await FirebaseAuth.instance.signInWithCredential(authCredential);
