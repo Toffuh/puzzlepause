@@ -225,6 +225,13 @@ class _GameState extends State<Game> {
         UserData.getInstance().points = points;
       }
 
+      //help huff schon müde
+      //der setter macht db aufruf bruacht aber ein bisschen
+      //dadurch ist noch alter wert in db wenn ich auf /leaderboard gehe
+      //deswege warte ich ne sekunde bitte besser lösung lg danke :D
+
+      await Future.delayed(const Duration(seconds: 1));
+
       Navigator.pushNamed(context, "/leaderboard");
     } else {
       print("not added to db");
