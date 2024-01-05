@@ -1,9 +1,5 @@
-import 'dart:async';
 import 'dart:math';
 
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:puzzelpause/components/game/gridDisplay.dart';
 import 'package:puzzelpause/components/game/pieceDisplay.dart';
@@ -33,6 +29,7 @@ class _GameState extends State<Game> {
   //powerups
   int bombCount = 0;
   int singleTileCount = 0;
+  int refreshCount = 0;
 
   @override
   void initState() {
@@ -40,6 +37,7 @@ class _GameState extends State<Game> {
 
     bombCount = 1;
     singleTileCount = 1;
+    refreshCount = 1;
 
     openPieces = Piece.generateRandomPieces(3);
 
@@ -63,7 +61,8 @@ class _GameState extends State<Game> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (bombCount > 0) bombIcon(),
-              if (singleTileCount > 0) singleTileIcon()
+              if (singleTileCount > 0) singleTileIcon(),
+              if (refreshCount > 0) refreshIcon()
             ],
           ),
           if (hasLost)
@@ -264,12 +263,63 @@ class _GameState extends State<Game> {
             ])));
   }
 
+  Widget refreshIcon() {
+    var tileSize = Tile.getSize(context);
+
+    return SizedBox(
+      height: tileSize,
+      width: tileSize,
+      child: Stack(children: [
+        FloatingActionButton(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(100.0),
+          ),
+          onPressed: onRefresh,
+          child: Container(
+              padding: const EdgeInsets.all(5),
+              child: Icon(
+                  color: Colors.black,
+                  size: tileSize.toDouble() - 10,
+                  Icons.refresh)),
+        ),
+        Positioned(
+            right: 0,
+            bottom: 0,
+            child: SizedBox(
+              height: tileSize * 0.5,
+              width: tileSize * 0.5,
+              child: Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: const BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.all(Radius.circular(50))),
+                  child: Center(
+                      child: Text(
+                    "$refreshCount",
+                    style: const TextStyle(color: Colors.white),
+                  ))),
+            ))
+      ]),
+    );
+  }
+
+  void onRefresh() {
+    refreshCount--;
+
+    openPieces = Piece.generateRandomPieces(openPieces.length);
+
+    setState(() {});
+  }
+
   void getRandomPowerup() {
-    switch (Random().nextInt(2)) {
+    switch (Random().nextInt(3)) {
       case 0:
         bombCount++;
       case 1:
         singleTileCount++;
+      case 2:
+        refreshCount++;
     }
   }
 }
