@@ -41,6 +41,7 @@ dependencies:
   sign_in_button: ^3.2.0
   shared_preferences: ^2.2.2
   firebase_database: ^10.3.8
+  github_sign_in: ^0.0.5-dev.4
 
 dev_dependencies:
   flutter_test:
