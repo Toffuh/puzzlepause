@@ -35,7 +35,7 @@ class _HomeState extends State<Home> {
     UserData.getInstance().photoURL = photoURL;
 
     int? points = sharedPreferences.getInt("points");
-    UserData.getInstance().points = points ??= 0;
+    UserData.getInstance().setPoints(points ?? 0);
 
     setState(() {
       loading = false;

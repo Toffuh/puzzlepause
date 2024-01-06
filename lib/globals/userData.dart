@@ -78,14 +78,14 @@ class UserData {
 
   int get points => _points;
 
-  set points(int value) {
+  Future<void> setPoints(int value) async {
     _points = value;
 
-    pointsDBUpdate();
-    _updateSharedPreferences("points", value);
+    await pointsDBUpdate();
+    await _updateSharedPreferences("points", value);
   }
 
-  void pointsDBUpdate() async {
+  Future<void> pointsDBUpdate() async {
     //update points in DB
     DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
     final snapshot = await databaseReference
