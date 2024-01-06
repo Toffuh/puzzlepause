@@ -46,23 +46,21 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 31, 16, 42),
+      appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: const Color.fromARGB(255, 31, 16, 42),
+          title: const Center(
+            child: Text("PuzzlePause",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30)),
+          )),
       body: !loading
           ? Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Padding(
-                      padding: EdgeInsets.all(30),
-                      child: Stack(
-                        children: [
-                          Center(
-                            child: Text("PuzzlePause - Gemütliches Tetris",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 30)),
-                          ),
-                        ],
-                      )),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
                     child: TextButton(
@@ -72,7 +70,7 @@ class _HomeState extends State<Home> {
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 22))),
+                                fontSize: 25))),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
@@ -83,7 +81,7 @@ class _HomeState extends State<Home> {
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 22))),
+                                fontSize: 25))),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
@@ -94,7 +92,7 @@ class _HomeState extends State<Home> {
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 22))),
+                                fontSize: 25))),
                   ),
                 ],
               ),

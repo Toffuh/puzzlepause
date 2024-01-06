@@ -35,7 +35,6 @@ class _LeaderboardState extends State<Leaderboard> {
     users.forEach((key, value) {
       userList.add(User(value["displayName"], key, value["points"]));
     });
-
     userList.sort((a, b) => b.points.compareTo(a.points));
 
     setState(() {});
@@ -50,7 +49,8 @@ class _LeaderboardState extends State<Leaderboard> {
 
     if (highlightedIndex != -1) {
       _scrollController.animateTo(
-        highlightedIndex * 30,
+        //                 ↓ height of listTile                ↓ height of appBar
+        highlightedIndex * 48 - ((context.size?.height ?? 0) - 60 / 2) / 2,
         duration: const Duration(seconds: 1),
         curve: Curves.easeInOut,
       );
@@ -63,7 +63,7 @@ class _LeaderboardState extends State<Leaderboard> {
         backgroundColor: const Color.fromARGB(255, 31, 16, 42),
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 31, 16, 42),
-          toolbarHeight: 100,
+          toolbarHeight: 60,
           leading: IconButton(
             onPressed: () => {Navigator.pushNamed(context, "/")},
             icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
@@ -100,8 +100,8 @@ class _LeaderboardState extends State<Leaderboard> {
                         ? const Color.fromARGB(255, 91, 166, 117)
                         : Colors.transparent),
                 child: SizedBox(
+                  height: 48,
                   width: 400,
-                  height: 50,
                   child: ListTile(
                     leading: CircleAvatar(
                       child: Text((index + 1).toString()),
