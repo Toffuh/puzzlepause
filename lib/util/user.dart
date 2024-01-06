@@ -1,11 +1,12 @@
 class User {
   String name;
+  String uid;
   int points;
 
-  User(this.name, this.points);
+  User(this.name, this.uid, this.points);
 
   @override
   String toString() {
-    return 'User{_name: $name, _points: $points}';
+    return 'User{name: $name, uid: $uid, points: $points}';
   }
 }
