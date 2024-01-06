@@ -34,19 +34,25 @@ class Piece extends GridPlaceable {
       Position(0, 1),
     ],
     [
-      Position(0, -1),
-      Position(-1, 0),
-      Position(0, 0),
-      Position(1, -1),
-      Position(0, 1),
-    ],
-    [
       Position(0, 0),
       Position(0, 1),
       Position(1, 1),
       Position(1, 0),
       Position(2, 1)
     ],
+    [
+      Position(0, 0),
+      Position(1, 1)
+    ],
+    [
+      Position(0, 1),
+      Position(1, 0)
+    ],
+    [
+      Position(0, 1),
+      Position(1, 0),
+      Position(2, -1),
+    ]
   ];
 
   static final List<Color> pieceColors = [
