@@ -36,13 +36,13 @@ class _LeaderboardState extends State<Leaderboard> {
       userList.add(User(value["displayName"], key, value["points"]));
     });
 
-    for (var i = 0; i < 30; i++) {
-      userList.add(User("name", "uid", 22));
-    }
-
-    for (var i = 0; i < 10; i++) {
-      userList.add(User("name", "uid", 2));
-    }
+    // for (var i = 0; i < 30; i++) {
+    //   userList.add(User("name", "uid", 22));
+    // }
+    //
+    // for (var i = 0; i < 10; i++) {
+    //   userList.add(User("name", "uid", 2));
+    // }
 
     userList.sort((a, b) => b.points.compareTo(a.points));
 
@@ -59,14 +59,11 @@ class _LeaderboardState extends State<Leaderboard> {
   }
 
   void _scrollToHighlightedUser() {
-    print(getSize());
-
     UserData currentUser = UserData.getInstance();
     int highlightedIndex =
         userList.indexWhere((user) => user.uid == currentUser.uid);
 
     if (highlightedIndex != -1) {
-      print(context.size?.height);
       _scrollController.animateTo(
         //                 ↓ height of listTile                       ↓ height of appBar
         highlightedIndex * getSize() - ((context.size?.height ?? 0 - 60) / 2) + (getSize() / 2),
