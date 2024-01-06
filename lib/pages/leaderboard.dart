@@ -35,11 +35,27 @@ class _LeaderboardState extends State<Leaderboard> {
     users.forEach((key, value) {
       userList.add(User(value["displayName"], key, value["points"]));
     });
+
+    // for (var i = 0; i < 30; i++) {
+    //   userList.add(User("name", "uid", 22));
+    // }
+    //
+    // for (var i = 0; i < 10; i++) {
+    //   userList.add(User("name", "uid", 2));
+    // }
+
     userList.sort((a, b) => b.points.compareTo(a.points));
+
+    //other stuff
+    for (int i = 0; i < userList.length; i++) {
+      _sizedBoxKeys.add(GlobalKey());
+    }
 
     setState(() {});
 
-    _scrollToHighlightedUser();
+    Timer(const Duration(seconds: 1), () {
+      _scrollToHighlightedUser();
+    });
   }
 
   void _scrollToHighlightedUser() {
@@ -49,12 +65,27 @@ class _LeaderboardState extends State<Leaderboard> {
 
     if (highlightedIndex != -1) {
       _scrollController.animateTo(
-        //                 ↓ height of listTile                ↓ height of appBar
-        highlightedIndex * 48 - ((context.size?.height ?? 0) - 60 / 2) / 2,
+        //                 ↓ height of listTile                       ↓ height of appBar
+        highlightedIndex * getSize() - ((context.size?.height ?? 0 - 60) / 2) + (getSize() / 2),
         duration: const Duration(seconds: 1),
         curve: Curves.easeInOut,
       );
     }
+  }
+
+  final List<GlobalKey> _sizedBoxKeys = [];
+
+  double getSize() {
+    for (var value in _sizedBoxKeys) {
+      if (value.currentContext != null) {
+        final RenderBox renderBox =
+        value.currentContext!.findRenderObject() as RenderBox;
+
+        return renderBox.size.height;
+      }
+    }
+
+    return -1;
   }
 
   @override
@@ -63,6 +94,7 @@ class _LeaderboardState extends State<Leaderboard> {
         backgroundColor: const Color.fromARGB(255, 31, 16, 42),
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 31, 16, 42),
+          surfaceTintColor: const Color.fromARGB(255, 31, 16, 42),
           toolbarHeight: 60,
           leading: IconButton(
             onPressed: () => {Navigator.pushNamed(context, "/")},
@@ -100,7 +132,7 @@ class _LeaderboardState extends State<Leaderboard> {
                         ? const Color.fromARGB(255, 91, 166, 117)
                         : Colors.transparent),
                 child: SizedBox(
-                  height: 48,
+                  key: _sizedBoxKeys.isNotEmpty ? _sizedBoxKeys[index] : null,
                   width: 400,
                   child: ListTile(
                     leading: CircleAvatar(
