@@ -44,7 +44,7 @@ class _LeaderboardState extends State<Leaderboard> {
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 31, 16, 42),
           leading: IconButton(
-            onPressed: () => {Navigator.pop(context)},
+            onPressed: () => {Navigator.pushNamed(context, "/")},
             icon: const Icon(Icons.arrow_back, color: Colors.white),
           ),
           title: const Center(
