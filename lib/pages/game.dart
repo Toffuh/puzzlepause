@@ -81,8 +81,7 @@ class _GameState extends State<Game> {
                 children: <Widget>[
                   if (bombCount > 0)
                     Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: bombIcon()),
+                        padding: const EdgeInsets.all(20.0), child: bombIcon()),
                   if (singleTileCount > 0)
                     Padding(
                         padding: const EdgeInsets.all(20.0),
@@ -99,7 +98,8 @@ class _GameState extends State<Game> {
               child: Container(
                 alignment: Alignment.centerRight,
                 child: IconButton(
-                  icon: const Icon(Icons.highlight_remove_sharp, size: 50, color: Colors.white),
+                  icon: const Icon(Icons.highlight_remove_sharp,
+                      size: 50, color: Colors.white),
                   onPressed: () => endGame(),
                 ),
               ),
@@ -218,17 +218,18 @@ class _GameState extends State<Game> {
     bool gameEnd = await showGameEndDialog();
 
     if (gameEnd) {
-      print("added to db");
       int currentHighScore = UserData.getInstance().points;
 
       if (points > currentHighScore) {
-        UserData.getInstance().points = points;
+        await UserData.getInstance().setPoints(points);
       }
 
-      Navigator.pushNamed(context, "/leaderboard");
-    } else {
-      print("not added to db");
+      changeToLeaderboard();
     }
+  }
+
+  void changeToLeaderboard(){
+     Navigator.pushNamed(context, "/leaderboard");
   }
 
   void removeOpenPiece(Piece piece) {
