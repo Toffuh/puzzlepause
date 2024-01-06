@@ -96,7 +96,9 @@ class _LeaderboardState extends State<Leaderboard> {
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: highlight ? Colors.amberAccent : Colors.transparent),
+                    color: highlight
+                        ? const Color.fromARGB(255, 91, 166, 117)
+                        : Colors.transparent),
                 child: SizedBox(
                   width: 400,
                   height: 50,
