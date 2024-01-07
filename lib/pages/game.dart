@@ -57,58 +57,54 @@ class _GameState extends State<Game> {
       backgroundColor: const Color.fromARGB(255, 31, 16, 42),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 31, 16, 42),
-        toolbarHeight: 100,
         automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              flex: 2,
-              child: Container(
-                alignment: Alignment.centerLeft,
-                child: Text("Punkte: $points",
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
-                    )),
-              ),
-            ),
-            Expanded(
-              flex: 3,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  if (bombCount > 0)
-                    Padding(
-                        padding: const EdgeInsets.all(20.0), child: bombIcon()),
-                  if (singleTileCount > 0)
-                    Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: singleTileIcon()),
-                  if (refreshCount > 0)
-                    Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: refreshIcon())
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                alignment: Alignment.centerRight,
-                child: IconButton(
-                  icon: const Icon(Icons.highlight_remove_sharp,
-                      size: 50, color: Colors.white),
-                  onPressed: () => endGame(),
-                ),
-              ),
-            ),
-          ],
+        centerTitle: true,
+        title: const Text("Puzzlepause"),
+        titleTextStyle: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 30,
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.highlight_remove_sharp,
+                size: 40, color: Colors.white),
+            onPressed: () => endGame(),
+          )
+        ],
       ),
       body: Column(
         children: [
+          AppBar(
+            backgroundColor: const Color.fromARGB(255, 31, 16, 42),
+            automaticallyImplyLeading: false,
+            centerTitle: true,
+            title: Text("Punkte: $points"),
+            titleTextStyle: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 25,
+            ),
+          ),
+          AppBar(
+            backgroundColor: const Color.fromARGB(255, 31, 16, 42),
+            automaticallyImplyLeading: false,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                if (bombCount > 0)
+                  Padding(
+                      padding: const EdgeInsets.all(20.0), child: bombIcon()),
+                if (singleTileCount > 0)
+                  Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: singleTileIcon()),
+                if (refreshCount > 0)
+                  Padding(
+                      padding: const EdgeInsets.all(20.0), child: refreshIcon())
+              ],
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: GridDisplay(
@@ -228,8 +224,8 @@ class _GameState extends State<Game> {
     }
   }
 
-  void changeToLeaderboard(){
-     Navigator.pushNamed(context, "/leaderboard");
+  void changeToLeaderboard() {
+    Navigator.pushNamed(context, "/leaderboard");
   }
 
   void removeOpenPiece(Piece piece) {
