@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
         "/login": (context) => const Auth()
       },
       initialRoute: "/",
+      debugShowCheckedModeBanner: false,
     );
   }
 }

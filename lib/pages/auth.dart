@@ -19,33 +19,33 @@ class _AuthState extends State<Auth> {
       backgroundColor: const Color.fromARGB(255, 31, 16, 42),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 31, 16, 42),
+        toolbarHeight: 80,
         leading: IconButton(
           onPressed: () => {Navigator.pop(context)},
           icon: const Icon(Icons.arrow_back, color: Colors.white),
         ),
-        title: const Center(
-          child: Text(
-            "Anmelden",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 30,
-            ),
-          ),
+        centerTitle: true,
+        title: const Text("Anmelden"),
+        titleTextStyle: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 30,
         ),
         actions: [
           IconButton(
-            onPressed: () => {},
-            icon: Container(
-              height: 40,
-              width: 40,
-              alignment: Alignment.topRight,
-              child: Image.network(
-                UserData.getInstance().photoURL ??= "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png",
-                fit: BoxFit.cover,
-              ),
-            ),
-          )
+              onPressed: () => {},
+              icon: ClipRRect(
+                borderRadius: BorderRadius.circular(50),
+                child: SizedBox(
+                  height: 40,
+                  width: 40,
+                  child: Image.network(
+                    UserData.getInstance().photoURL ??=
+                        "https://cdn3.iconfinder.com/data/icons/social-messaging-productivity-6/128/profile-circle2-512.png",
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              )),
         ],
       ),
       body: UserData.getInstance().uid == null ? Login(update) : Logout(update),
