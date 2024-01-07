@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 
 import '../../globals/userData.dart';
 
@@ -13,14 +14,35 @@ class Logout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-        child: TextButton(
-          child: const Text("Abmelden"),
-          onPressed: () {
-            signOutWithGoogle();
-          },
-        ),
+      child: Column(
+        children: [
+          Center(
+            child: Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width * 0.8,
+              padding: const EdgeInsets.fromLTRB(0, 50, 0, 50),
+              child: const Text(
+                "Falls Sie sich mit einem anderen Account anmelden möchten, können Sie sich hier abmelden.",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+            child: SignInButton(
+              Buttons.google,
+              text: "Abmelden",
+              onPressed: () {
+                signOutWithGoogle();
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
