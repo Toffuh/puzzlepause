@@ -181,22 +181,32 @@ class _GameState extends State<Game> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Aufgeben?"),
-          content: const Text("Möchtest du aufhören?"),
+          title: const Center(child: Text("Spiel beenden?")),
+          content: const Center(
+              heightFactor: 4,
+              child: Text("Möchtest du aufhören?",
+                  style: TextStyle(fontSize: 16))),
           actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                hasLost = true;
-                Navigator.of(context).pop();
-              },
-              child: const Text("JA"),
-            ),
-            TextButton(
-              onPressed: () {
-                hasLost = false;
-                Navigator.of(context).pop();
-              },
-              child: const Text("NEIN"),
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      hasLost = true;
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("JA", style: TextStyle(color: Colors.green)),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      hasLost = false;
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("NEIN", style: TextStyle(color: Colors.red)),
+                  ),
+                ],
+              ),
             ),
           ],
         );
