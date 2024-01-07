@@ -17,6 +17,8 @@ class _LeaderboardState extends State<Leaderboard> {
   late List<User> userList = [];
   final ScrollController _scrollController = ScrollController();
 
+  final toolBarHeight = 80.0;
+
   @override
   void initState() {
     fetchUsers();
@@ -36,23 +38,30 @@ class _LeaderboardState extends State<Leaderboard> {
       userList.add(User(value["displayName"], key, value["points"]));
     });
 
-    // for (var i = 0; i < 30; i++) {
+    // for (var i = 0; i < 20; i++) {
     //   userList.add(User("name", "uid", 22));
     // }
     //
-    // for (var i = 0; i < 10; i++) {
+    // for (var i = 0; i < 20; i++) {
     //   userList.add(User("name", "uid", 2));
     // }
 
     userList.sort((a, b) => b.points.compareTo(a.points));
 
-    //other stuff
-    for (int i = 0; i < userList.length; i++) {
-      _sizedBoxKeys.add(GlobalKey());
-    }
+    addGlobalKeys();
 
     setState(() {});
 
+    scrollToUser();
+  }
+
+  void addGlobalKeys() {
+    for (int i = 0; i < userList.length; i++) {
+      _sizedBoxKeys.add(GlobalKey());
+    }
+  }
+
+  void scrollToUser() {
     Timer(const Duration(seconds: 1), () {
       _scrollToHighlightedUser();
     });
@@ -65,8 +74,9 @@ class _LeaderboardState extends State<Leaderboard> {
 
     if (highlightedIndex != -1) {
       _scrollController.animateTo(
-        //                 ↓ height of listTile                       ↓ height of appBar
-        highlightedIndex * getSize() - ((context.size?.height ?? 0 - 60) / 2) + (getSize() / 2),
+        highlightedIndex * getSize() -
+            ((context.size?.height ?? 0 - toolBarHeight) / 2) +
+            (getSize() / 2),
         duration: const Duration(seconds: 1),
         curve: Curves.easeInOut,
       );
@@ -79,7 +89,7 @@ class _LeaderboardState extends State<Leaderboard> {
     for (var value in _sizedBoxKeys) {
       if (value.currentContext != null) {
         final RenderBox renderBox =
-        value.currentContext!.findRenderObject() as RenderBox;
+            value.currentContext!.findRenderObject() as RenderBox;
 
         return renderBox.size.height;
       }
@@ -95,20 +105,17 @@ class _LeaderboardState extends State<Leaderboard> {
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 31, 16, 42),
           surfaceTintColor: const Color.fromARGB(255, 31, 16, 42),
-          toolbarHeight: 60,
+          toolbarHeight: toolBarHeight,
           leading: IconButton(
             onPressed: () => {Navigator.pushNamed(context, "/")},
             icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
           ),
-          title: const Center(
-            child: Text(
-              "Bestenliste",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
-              ),
-            ),
+          centerTitle: true,
+          title: const Text("Bestenliste"),
+          titleTextStyle: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 30,
           ),
           actions: [
             IconButton(
