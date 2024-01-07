@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:github_sign_in/github_sign_in.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_button/sign_in_button.dart';
@@ -15,32 +16,45 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-              child: SignInButton(
-                Buttons.gitHub,
-                text: "Anmelden mit GitHub",
-                onPressed: () {
-                  signInWithGitHub(context);
-                },
+      child: Column(
+        children: [
+          Center(
+            child: Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width * 0.8,
+              padding: const EdgeInsets.fromLTRB(0, 50, 0, 50),
+              child: const Text(
+                "Um Ihren Spielstand in der Bestenliste zu speichern, bitten wir Sie, sich hier anzumelden.",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-              child: SignInButton(
-                Buttons.google,
-                text: "Anmelden mit Google",
-                onPressed: () {
-                  signInWithGoogle();
-                },
-              ),
-            )
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+            child: SignInButton(
+              Buttons.google,
+              text: "Anmelden mit Google",
+              onPressed: () {
+                signInWithGoogle();
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+            child: SignInButton(
+              Buttons.gitHub,
+              text: "Anmelden mit GitHub",
+              onPressed: () {
+                signInWithGitHub(context);
+              },
+            ),
+          )
+        ],
       ),
     );
   }
