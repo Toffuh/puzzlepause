@@ -30,6 +30,7 @@ class _GameState extends State<Game> {
   int bombCount = 0;
   int singleTileCount = 0;
   int refreshCount = 0;
+  int turnCount = 0;
 
   @override
   void initState() {
@@ -38,6 +39,7 @@ class _GameState extends State<Game> {
     bombCount = 1;
     singleTileCount = 1;
     refreshCount = 1;
+    turnCount = 1;
 
     openPieces = Piece.generateRandomPieces(3);
 
@@ -101,7 +103,10 @@ class _GameState extends State<Game> {
                       child: singleTileIcon()),
                 if (refreshCount > 0)
                   Padding(
-                      padding: const EdgeInsets.all(20.0), child: refreshIcon())
+                      padding: const EdgeInsets.all(20.0), child: refreshIcon()),
+                if (turnCount > 0)
+                  Padding(
+                      padding: const EdgeInsets.all(20.0), child: turnIcon())
               ],
             ),
           ),
@@ -366,7 +371,7 @@ class _GameState extends State<Game> {
               child: Icon(
                   color: Colors.black,
                   size: tileSize.toDouble() - 10,
-                  Icons.refresh)),
+                  Icons.delete)),
         ),
         Positioned(
             right: 0,
@@ -393,6 +398,59 @@ class _GameState extends State<Game> {
     refreshCount--;
 
     openPieces = Piece.generateRandomPieces(openPieces.length);
+
+    setState(() {});
+  }
+
+  Widget turnIcon() {
+    var tileSize = Tile.getSize(context);
+
+    return SizedBox(
+      height: tileSize,
+      width: tileSize,
+      child: Stack(children: [
+        FloatingActionButton(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(100.0),
+          ),
+          onPressed: onTurn,
+          child: Container(
+              padding: const EdgeInsets.all(5),
+              child: Icon(
+                  color: Colors.black,
+                  size: tileSize.toDouble() - 10,
+                  Icons.refresh)),
+        ),
+        Positioned(
+            right: 0,
+            bottom: 0,
+            child: SizedBox(
+              height: tileSize * 0.5,
+              width: tileSize * 0.5,
+              child: Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: const BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.all(Radius.circular(50))),
+                  child: Center(
+                      child: Text(
+                        "$turnCount",
+                        style: const TextStyle(color: Colors.white),
+                      ))),
+            ))
+      ]),
+    );
+  }
+
+  void onTurn(){
+    turnCount--;
+
+    for(var piece in openPieces){
+      for (var i = 1; i < Random().nextInt(4); i++) {
+        piece.rotate();
+      }
+    }
 
     setState(() {});
   }
