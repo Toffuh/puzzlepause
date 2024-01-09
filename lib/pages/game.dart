@@ -77,21 +77,17 @@ class _GameState extends State<Game> {
       ),
       body: Column(
         children: [
-          AppBar(
-            backgroundColor: const Color.fromARGB(255, 31, 16, 42),
-            automaticallyImplyLeading: false,
-            centerTitle: true,
-            title: Text("Punkte: $points"),
-            titleTextStyle: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 25,
-            ),
+          Center(
+            child: Text("Punkte: $points",
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                )),
           ),
-          AppBar(
-            backgroundColor: const Color.fromARGB(255, 31, 16, 42),
-            automaticallyImplyLeading: false,
-            title: Row(
+          SizedBox(
+            height: 100,
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 if (bombCount > 0)
@@ -128,9 +124,11 @@ class _GameState extends State<Game> {
                                   Tile.fromPiece(piece));
                             }
 
-                            var clearCount = grid.clear();
+                            int clearCount = grid.clear();
 
-                            points += clearCount * 3;
+                            if (clearCount > 0) {
+                              points += pow(3, clearCount) as int;
+                            }
 
                             if (clearCount > 0) {
                               getRandomPowerup();
@@ -295,10 +293,7 @@ class _GameState extends State<Game> {
       child: SizedBox(
         height: tileSize,
         width: tileSize,
-        child: Stack(children: [
-          bombIcon,
-          iconCount(tileSize, bombCount)
-        ]),
+        child: Stack(children: [bombIcon, iconCount(tileSize, bombCount)]),
       ),
     );
   }
@@ -366,7 +361,9 @@ class _GameState extends State<Game> {
     turnCount--;
 
     for (var piece in openPieces) {
-      for (var i = 1; i < Random().nextInt(4); i++) {
+      var count = Random().nextInt(3);
+
+      for (var i = 0; i < count; i++) {
         piece.rotate();
       }
     }
