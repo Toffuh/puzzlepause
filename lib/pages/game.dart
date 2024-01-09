@@ -424,12 +424,14 @@ class _GameState extends State<Game> {
   }
 
   void getRandomPowerup() {
-    switch (Random().nextInt(3)) {
+    switch (Random().nextInt(4)) {
       case 0:
         bombCount++;
       case 1:
         singleTileCount++;
       case 2:
+        refreshCount++;
+      case 3:
         refreshCount++;
     }
   }
