@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:puzzelpause/util/loginType.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 
 import '../../globals/userData.dart';
@@ -35,10 +35,14 @@ class Logout extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
             child: SignInButton(
-              Buttons.google,
+              UserData.getInstance().loginType == LoginType.google
+                  ? Buttons.google
+                  : Buttons.gitHub,
               text: "Abmelden",
               onPressed: () {
-                signOutWithGoogle();
+                UserData.getInstance().loginType == LoginType.google
+                    ? signOutWithGoogle()
+                    : signOutWithGitHub();
               },
             ),
           ),
@@ -52,6 +56,14 @@ class Logout extends StatelessWidget {
             clientId:
                 "152856632849-6rmn1klasong8617aoigrs1pguvqe04q.apps.googleusercontent.com")
         .signOut();
+    FirebaseAuth.instance.signOut();
+
+    UserData.getInstance().clear();
+
+    update();
+  }
+
+  signOutWithGitHub() async {
     FirebaseAuth.instance.signOut();
 
     UserData.getInstance().clear();

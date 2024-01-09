@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:github_sign_in/github_sign_in.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:puzzelpause/util/loginType.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -78,6 +79,7 @@ class Login extends StatelessWidget {
     UserData.getInstance().email = userCredential.user?.email;
     UserData.getInstance().displayName = userCredential.user?.displayName;
     UserData.getInstance().photoURL = userCredential.user!.photoURL!;
+    UserData.getInstance().loginType = LoginType.google;
 
     //add to firebase db
     await addToFirebaseDB(userCredential);
@@ -105,6 +107,7 @@ class Login extends StatelessWidget {
     UserData.getInstance().email = userCredential.user?.email;
     UserData.getInstance().displayName = userCredential.user?.displayName;
     UserData.getInstance().photoURL = userCredential.user!.photoURL!;
+    UserData.getInstance().loginType = LoginType.github;
 
     //add to firebase db
     await addToFirebaseDB(userCredential);
