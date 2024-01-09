@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:puzzelpause/util/loginType.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserData {
@@ -6,6 +7,7 @@ class UserData {
   String? _email;
   String? _displayName;
   String? _photoURL;
+  LoginType? _loginType;
   late int _points;
 
   static UserData? _instance;
@@ -27,6 +29,9 @@ class UserData {
       await sharedPreferences.setInt(key, value);
     } else if (value is String) {
       await sharedPreferences.setString(key, value);
+    } else if (value is LoginType) {
+      print(value.name);
+      await sharedPreferences.setString(key, value.name);
     }
 
     sharedPreferences.reload();
@@ -40,6 +45,7 @@ class UserData {
     _displayName = null;
     _photoURL = null;
     _points = 0;
+    _loginType = null;
 
     sharedPreferences.clear();
   }
@@ -74,6 +80,14 @@ class UserData {
     _uid = value;
 
     _updateSharedPreferences("uid", value);
+  }
+
+  LoginType? get loginType => _loginType;
+
+  set loginType(LoginType? value) {
+    _loginType = value;
+
+    _updateSharedPreferences("loginType", value);
   }
 
   int get points => _points;

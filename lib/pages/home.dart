@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:puzzelpause/globals/userData.dart';
+import 'package:puzzelpause/util/loginType.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
@@ -36,6 +37,10 @@ class _HomeState extends State<Home> {
 
     int? points = sharedPreferences.getInt("points");
     UserData.getInstance().setPoints(points ?? 0);
+
+    String? loginType = sharedPreferences.getString("loginType");
+    UserData.getInstance().loginType =
+        loginType == "google" ? LoginType.google : LoginType.github;
 
     setState(() {
       loading = false;
