@@ -27,10 +27,10 @@ class _GameState extends State<Game> {
   bool hasLost = false;
 
   //powerups
-  int bombCount = 0;
-  int singleTileCount = 0;
-  int refreshCount = 0;
-  int turnCount = 0;
+  int bombCount = 1;
+  int singleTileCount = 1;
+  int refreshCount = 1;
+  int turnCount = 1;
 
   int powerupProgress = 0;
   static const int maxPowerupProgress = 12;
