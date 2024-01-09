@@ -103,7 +103,8 @@ class _GameState extends State<Game> {
                       child: singleTileIcon()),
                 if (refreshCount > 0)
                   Padding(
-                      padding: const EdgeInsets.all(20.0), child: refreshIcon()),
+                      padding: const EdgeInsets.all(20.0),
+                      child: refreshIcon()),
                 if (turnCount > 0)
                   Padding(
                       padding: const EdgeInsets.all(20.0), child: turnIcon())
@@ -201,14 +202,16 @@ class _GameState extends State<Game> {
                       hasLost = true;
                       Navigator.of(context).pop();
                     },
-                    child: const Text("JA", style: TextStyle(color: Colors.green)),
+                    child:
+                        const Text("JA", style: TextStyle(color: Colors.green)),
                   ),
                   TextButton(
                     onPressed: () {
                       hasLost = false;
                       Navigator.of(context).pop();
                     },
-                    child: const Text("NEIN", style: TextStyle(color: Colors.red)),
+                    child:
+                        const Text("NEIN", style: TextStyle(color: Colors.red)),
                   ),
                 ],
               ),
@@ -354,44 +357,7 @@ class _GameState extends State<Game> {
   }
 
   Widget refreshIcon() {
-    var tileSize = Tile.getSize(context);
-
-    return SizedBox(
-      height: tileSize,
-      width: tileSize,
-      child: Stack(children: [
-        FloatingActionButton(
-          backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(100.0),
-          ),
-          onPressed: onRefresh,
-          child: Container(
-              padding: const EdgeInsets.all(5),
-              child: Icon(
-                  color: Colors.black,
-                  size: tileSize.toDouble() - 10,
-                  Icons.delete)),
-        ),
-        Positioned(
-            right: 0,
-            bottom: 0,
-            child: SizedBox(
-              height: tileSize * 0.5,
-              width: tileSize * 0.5,
-              child: Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: const BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.all(Radius.circular(50))),
-                  child: Center(
-                      child: Text(
-                    "$refreshCount",
-                    style: const TextStyle(color: Colors.white),
-                  ))),
-            ))
-      ]),
-    );
+    return iconPowerup(Icons.delete, refreshCount, onRefresh);
   }
 
   void onRefresh() {
@@ -403,6 +369,10 @@ class _GameState extends State<Game> {
   }
 
   Widget turnIcon() {
+    return iconPowerup(Icons.refresh, turnCount, onTurn);
+  }
+
+  Widget iconPowerup(IconData icon, int count, void Function() onPress) {
     var tileSize = Tile.getSize(context);
 
     return SizedBox(
@@ -414,13 +384,11 @@ class _GameState extends State<Game> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(100.0),
           ),
-          onPressed: onTurn,
+          onPressed: onPress,
           child: Container(
               padding: const EdgeInsets.all(5),
               child: Icon(
-                  color: Colors.black,
-                  size: tileSize.toDouble() - 10,
-                  Icons.refresh)),
+                  color: Colors.black, size: tileSize.toDouble() - 10, icon)),
         ),
         Positioned(
             right: 0,
@@ -435,18 +403,18 @@ class _GameState extends State<Game> {
                       borderRadius: BorderRadius.all(Radius.circular(50))),
                   child: Center(
                       child: Text(
-                        "$turnCount",
-                        style: const TextStyle(color: Colors.white),
-                      ))),
+                    "$count",
+                    style: const TextStyle(color: Colors.white),
+                  ))),
             ))
       ]),
     );
   }
 
-  void onTurn(){
+  void onTurn() {
     turnCount--;
 
-    for(var piece in openPieces){
+    for (var piece in openPieces) {
       for (var i = 1; i < Random().nextInt(4); i++) {
         piece.rotate();
       }
