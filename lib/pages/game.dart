@@ -30,6 +30,7 @@ class _GameState extends State<Game> {
   int bombCount = 0;
   int singleTileCount = 0;
   int refreshCount = 0;
+  int turnCount = 0;
 
   @override
   void initState() {
@@ -38,6 +39,7 @@ class _GameState extends State<Game> {
     bombCount = 1;
     singleTileCount = 1;
     refreshCount = 1;
+    turnCount = 1;
 
     openPieces = Piece.generateRandomPieces(3);
 
@@ -101,7 +103,11 @@ class _GameState extends State<Game> {
                       child: singleTileIcon()),
                 if (refreshCount > 0)
                   Padding(
-                      padding: const EdgeInsets.all(20.0), child: refreshIcon())
+                      padding: const EdgeInsets.all(20.0),
+                      child: refreshIcon()),
+                if (turnCount > 0)
+                  Padding(
+                      padding: const EdgeInsets.all(20.0), child: turnIcon())
               ],
             ),
           ),
@@ -196,14 +202,16 @@ class _GameState extends State<Game> {
                       hasLost = true;
                       Navigator.of(context).pop();
                     },
-                    child: const Text("JA", style: TextStyle(color: Colors.green)),
+                    child:
+                        const Text("JA", style: TextStyle(color: Colors.green)),
                   ),
                   TextButton(
                     onPressed: () {
                       hasLost = false;
                       Navigator.of(context).pop();
                     },
-                    child: const Text("NEIN", style: TextStyle(color: Colors.red)),
+                    child:
+                        const Text("NEIN", style: TextStyle(color: Colors.red)),
                   ),
                 ],
               ),
@@ -349,6 +357,22 @@ class _GameState extends State<Game> {
   }
 
   Widget refreshIcon() {
+    return iconPowerup(Icons.delete, refreshCount, onRefresh);
+  }
+
+  void onRefresh() {
+    refreshCount--;
+
+    openPieces = Piece.generateRandomPieces(openPieces.length);
+
+    setState(() {});
+  }
+
+  Widget turnIcon() {
+    return iconPowerup(Icons.refresh, turnCount, onTurn);
+  }
+
+  Widget iconPowerup(IconData icon, int count, void Function() onPress) {
     var tileSize = Tile.getSize(context);
 
     return SizedBox(
@@ -360,13 +384,11 @@ class _GameState extends State<Game> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(100.0),
           ),
-          onPressed: onRefresh,
+          onPressed: onPress,
           child: Container(
               padding: const EdgeInsets.all(5),
               child: Icon(
-                  color: Colors.black,
-                  size: tileSize.toDouble() - 10,
-                  Icons.refresh)),
+                  color: Colors.black, size: tileSize.toDouble() - 10, icon)),
         ),
         Positioned(
             right: 0,
@@ -381,7 +403,7 @@ class _GameState extends State<Game> {
                       borderRadius: BorderRadius.all(Radius.circular(50))),
                   child: Center(
                       child: Text(
-                    "$refreshCount",
+                    "$count",
                     style: const TextStyle(color: Colors.white),
                   ))),
             ))
@@ -389,21 +411,27 @@ class _GameState extends State<Game> {
     );
   }
 
-  void onRefresh() {
-    refreshCount--;
+  void onTurn() {
+    turnCount--;
 
-    openPieces = Piece.generateRandomPieces(openPieces.length);
+    for (var piece in openPieces) {
+      for (var i = 1; i < Random().nextInt(4); i++) {
+        piece.rotate();
+      }
+    }
 
     setState(() {});
   }
 
   void getRandomPowerup() {
-    switch (Random().nextInt(3)) {
+    switch (Random().nextInt(4)) {
       case 0:
         bombCount++;
       case 1:
         singleTileCount++;
       case 2:
+        refreshCount++;
+      case 3:
         refreshCount++;
     }
   }

@@ -46,10 +46,6 @@ class Piece extends GridPlaceable {
     ],
     [
       Position(0, 1),
-      Position(1, 0)
-    ],
-    [
-      Position(0, 1),
       Position(1, 0),
       Position(2, -1),
     ]
@@ -96,7 +92,7 @@ class Piece extends GridPlaceable {
 
     for (var position in relativePositions) {
       var newY = -position.x;
-      var newX = -position.y;
+      var newX = position.y;
 
       positions.add(Position(newX, newY));
     }
