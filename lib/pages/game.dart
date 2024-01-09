@@ -297,23 +297,7 @@ class _GameState extends State<Game> {
         width: tileSize,
         child: Stack(children: [
           bombIcon,
-          Positioned(
-              right: 0,
-              bottom: 0,
-              child: SizedBox(
-                height: tileSize * 0.5,
-                width: tileSize * 0.5,
-                child: Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: const BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.all(Radius.circular(50))),
-                    child: Center(
-                        child: Text(
-                      "$bombCount",
-                      style: const TextStyle(color: Colors.white),
-                    ))),
-              ))
+          iconCount(tileSize, bombCount)
         ]),
       ),
     );
@@ -335,24 +319,7 @@ class _GameState extends State<Game> {
             },
             child: Stack(children: [
               PieceDisplay(piece),
-              Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: SizedBox(
-                    height: tileSize * 0.5,
-                    width: tileSize * 0.5,
-                    child: Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: const BoxDecoration(
-                            color: Colors.black,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(50))),
-                        child: Center(
-                            child: Text(
-                          "$singleTileCount",
-                          style: const TextStyle(color: Colors.white),
-                        ))),
-                  ))
+              iconCount(tileSize, singleTileCount)
             ])));
   }
 
@@ -390,23 +357,7 @@ class _GameState extends State<Game> {
               child: Icon(
                   color: Colors.black, size: tileSize.toDouble() - 10, icon)),
         ),
-        Positioned(
-            right: 0,
-            bottom: 0,
-            child: SizedBox(
-              height: tileSize * 0.5,
-              width: tileSize * 0.5,
-              child: Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: const BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.all(Radius.circular(50))),
-                  child: Center(
-                      child: Text(
-                    "$count",
-                    style: const TextStyle(color: Colors.white),
-                  ))),
-            ))
+        iconCount(tileSize, count)
       ]),
     );
   }
@@ -421,6 +372,25 @@ class _GameState extends State<Game> {
     }
 
     setState(() {});
+  }
+
+  Widget iconCount(double tileSize, int count) {
+    return Positioned(
+        right: 0,
+        bottom: 0,
+        child: SizedBox(
+          height: tileSize * 0.5,
+          width: tileSize * 0.5,
+          child: Container(
+              decoration: const BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.all(Radius.circular(50))),
+              child: Center(
+                  child: Text(
+                "$count",
+                style: const TextStyle(color: Colors.white),
+              ))),
+        ));
   }
 
   void getRandomPowerup() {
