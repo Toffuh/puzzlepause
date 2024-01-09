@@ -32,14 +32,12 @@ class _GameState extends State<Game> {
   int refreshCount = 0;
   int turnCount = 0;
 
+  int powerupProgress = 0;
+  static const int maxPowerupProgress = 12;
+
   @override
   void initState() {
     grid = Grid();
-
-    bombCount = 1;
-    singleTileCount = 1;
-    refreshCount = 1;
-    turnCount = 1;
 
     openPieces = Piece.generateRandomPieces(3);
 
@@ -86,24 +84,48 @@ class _GameState extends State<Game> {
                 )),
           ),
           SizedBox(
-            height: 100,
-            child: Row(
+            height: 110,
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                if (bombCount > 0)
-                  Padding(
-                      padding: const EdgeInsets.all(20.0), child: bombIcon()),
-                if (singleTileCount > 0)
-                  Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: singleTileIcon()),
-                if (refreshCount > 0)
-                  Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: refreshIcon()),
-                if (turnCount > 0)
-                  Padding(
-                      padding: const EdgeInsets.all(20.0), child: turnIcon())
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    if (bombCount > 0)
+                      Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: bombIcon()),
+                    if (singleTileCount > 0)
+                      Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: singleTileIcon()),
+                    if (refreshCount > 0)
+                      Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: refreshIcon()),
+                    if (turnCount > 0)
+                      Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: turnIcon())
+                  ],
+                ),
+                SizedBox(
+                  height: (bombCount > 0 || singleTileCount > 0 || refreshCount > 0 || turnCount > 0) ?  10 : 20,
+                  width: tileSize * 7,
+                  child: TweenAnimationBuilder<double>(
+                    duration: const Duration(milliseconds: 250),
+                    curve: Curves.easeInOut,
+                    tween: Tween<double>(
+                      begin: 0,
+                      end: powerupProgress / maxPowerupProgress,
+                    ),
+                    builder: (context, value, _) => LinearProgressIndicator(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                        color: const Color.fromARGB(255, 91, 166, 117),
+                        value: value),
+                  ),
+                ),
               ],
             ),
           ),
@@ -127,11 +149,9 @@ class _GameState extends State<Game> {
                             int clearCount = grid.clear();
 
                             if (clearCount > 0) {
-                              points += pow(3, clearCount) as int;
-                            }
-
-                            if (clearCount > 0) {
-                              getRandomPowerup();
+                              var additionPoints = pow(3, clearCount) as int;
+                              points += additionPoints;
+                              updatePowerUpProgress(additionPoints);
                             }
 
                             if (piece is SingleTile) {
@@ -400,6 +420,17 @@ class _GameState extends State<Game> {
         refreshCount++;
       case 3:
         refreshCount++;
+    }
+  }
+
+  void updatePowerUpProgress(int addition) {
+    for (var i = 0; i < addition; i++) {
+      powerupProgress++;
+
+      if (powerupProgress >= maxPowerupProgress) {
+        getRandomPowerup();
+        powerupProgress = 0;
+      }
     }
   }
 }
