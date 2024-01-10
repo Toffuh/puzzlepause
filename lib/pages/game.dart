@@ -381,7 +381,7 @@ class _GameState extends State<Game> {
     turnCount--;
 
     for (var piece in openPieces) {
-      var count = Random().nextInt(3);
+      var count = Random().nextInt(3) + 1;
 
       for (var i = 0; i < count; i++) {
         piece.rotate();
