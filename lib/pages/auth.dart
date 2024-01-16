@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:puzzelpause/components/login/login.dart';
 import 'package:puzzelpause/components/login/logout.dart';
 import 'package:puzzelpause/globals/userData.dart';

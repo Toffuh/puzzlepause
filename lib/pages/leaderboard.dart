@@ -48,61 +48,60 @@ class _LeaderboardState extends State<Leaderboard> {
 
     userList.sort((a, b) => b.points.compareTo(a.points));
 
-    addGlobalKeys();
+    // addGlobalKeys();
 
     setState(() {});
 
-    scrollToUser();
+    // scrollToUser();
   }
 
-  void addGlobalKeys() {
-    for (int i = 0; i < userList.length; i++) {
-      _sizedBoxKeys.add(GlobalKey());
-    }
-  }
+  // void addGlobalKeys() {
+  //   for (int i = 0; i < userList.length; i++) {
+  //     _sizedBoxKeys.add(GlobalKey());
+  //   }
+  // }
+  //
+  // void scrollToUser() {
+  //   Timer(const Duration(seconds: 1), () {
+  //     _scrollToHighlightedUser();
+  //   });
+  // }
+  //
+  // void _scrollToHighlightedUser() {
+  //   UserData currentUser = UserData.getInstance();
+  //   int highlightedIndex =
+  //       userList.indexWhere((user) => user.uid == currentUser.uid);
+  //
+  //   if (highlightedIndex != -1) {
+  //     _scrollController.animateTo(
+  //       highlightedIndex * getSize() -
+  //           ((context.size?.height ?? 0 - toolBarHeight) / 2) +
+  //           (getSize() / 2),
+  //       duration: const Duration(seconds: 1),
+  //       curve: Curves.easeInOut,
+  //     );
+  //   }
+  // }
 
-  void scrollToUser() {
-    Timer(const Duration(seconds: 1), () {
-      _scrollToHighlightedUser();
-    });
-  }
+  // final List<GlobalKey> _sizedBoxKeys = [];
 
-  void _scrollToHighlightedUser() {
-    UserData currentUser = UserData.getInstance();
-    int highlightedIndex =
-        userList.indexWhere((user) => user.uid == currentUser.uid);
+  // double getSize() {
+  //   for (var value in _sizedBoxKeys) {
+  //     if (value.currentContext != null) {
+  //       final RenderBox renderBox =
+  //           value.currentContext!.findRenderObject() as RenderBox;
+  //
+  //       return renderBox.size.height;
+  //     }
+  //   }
+  //
+  //   return -1;
+  // }
 
-    if (highlightedIndex != -1) {
-      _scrollController.animateTo(
-        highlightedIndex * getSize() -
-            ((context.size?.height ?? 0 - toolBarHeight) / 2) +
-            (getSize() / 2),
-        duration: const Duration(seconds: 1),
-        curve: Curves.easeInOut,
-      );
-    }
-  }
-
-  final List<GlobalKey> _sizedBoxKeys = [];
-
-  double getSize() {
-    for (var value in _sizedBoxKeys) {
-      if (value.currentContext != null) {
-        final RenderBox renderBox =
-            value.currentContext!.findRenderObject() as RenderBox;
-
-        return renderBox.size.height;
-      }
-    }
-
-    return -1;
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget x() {
     return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 31, 16, 42),
-        appBar: AppBar(
+      backgroundColor: const Color.fromARGB(255, 31, 16, 42),
+      appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 31, 16, 42),
           surfaceTintColor: const Color.fromARGB(255, 31, 16, 42),
           toolbarHeight: toolBarHeight,
@@ -123,49 +122,106 @@ class _LeaderboardState extends State<Leaderboard> {
                   fetchUsers();
                 },
                 icon: const Icon(Icons.refresh, color: Colors.white, size: 30))
-          ],
-        ),
-        body: ListView.builder(
-          controller: _scrollController,
-          itemCount: userList.length,
-          itemBuilder: (BuildContext context, int index) {
-            bool highlight = userList[index].uid == UserData.getInstance().uid;
-
-            return Center(
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: highlight
-                        ? const Color.fromARGB(255, 91, 166, 117)
-                        : Colors.transparent),
-                child: SizedBox(
-                  key: _sizedBoxKeys.isNotEmpty ? _sizedBoxKeys[index] : null,
-                  width: 400,
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      child: Text((index + 1).toString()),
-                    ),
-                    title: Text(
-                      userList[index].name,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                    trailing: Text(
-                      userList[index].points.toString(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
+          ]),
+      body: Column(
+        children: [
+          for (var (index, elem) in userList.indexed)
+            ListTile(
+                leading: CircleAvatar(
+                  child: Text((index + 1).toString()),
+                ),
+                title: Text(
+                  elem.name,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
                   ),
                 ),
-              ),
-            );
-          },
-        ));
+                trailing: Text(
+                  elem.points.toString(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+
+            )
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return x();
+    // return Scaffold(
+    //     backgroundColor: const Color.fromARGB(255, 31, 16, 42),
+    //     appBar: AppBar(
+    //       backgroundColor: const Color.fromARGB(255, 31, 16, 42),
+    //       surfaceTintColor: const Color.fromARGB(255, 31, 16, 42),
+    //       toolbarHeight: toolBarHeight,
+    //       leading: IconButton(
+    //         onPressed: () => {Navigator.pushNamed(context, "/")},
+    //         icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
+    //       ),
+    //       centerTitle: true,
+    //       title: const Text("Bestenliste"),
+    //       titleTextStyle: const TextStyle(
+    //         color: Colors.white,
+    //         fontWeight: FontWeight.bold,
+    //         fontSize: 30,
+    //       ),
+    //       actions: [
+    //         IconButton(
+    //             onPressed: () {
+    //               fetchUsers();
+    //             },
+    //             icon: const Icon(Icons.refresh, color: Colors.white, size: 30))
+    //       ],
+    //     ),
+    //     body: ListView.builder(
+    //       controller: _scrollController,
+    //       itemCount: userList.length,
+    //       itemBuilder: (BuildContext context, int index) {
+    //         bool highlight = userList[index].uid == UserData.getInstance().uid;
+    //
+    //         return Center(
+    //           child: Container(
+    //             decoration: BoxDecoration(
+    //                 borderRadius: BorderRadius.circular(20),
+    //                 color: highlight
+    //                     ? const Color.fromARGB(255, 91, 166, 117)
+    //                     : Colors.transparent),
+    //             child: SizedBox(
+    //               // key: _sizedBoxKeys.isNotEmpty ? _sizedBoxKeys[index] : null,
+    //               width: 400,
+    //               child: ListTile(
+    //                 leading: CircleAvatar(
+    //                   child: Text((index + 1).toString()),
+    //                 ),
+    //                 title: Text(
+    //                   userList[index].name,
+    //                   style: const TextStyle(
+    //                     color: Colors.white,
+    //                     fontWeight: FontWeight.bold,
+    //                     fontSize: 20,
+    //                   ),
+    //                 ),
+    //                 trailing: Text(
+    //                   userList[index].points.toString(),
+    //                   style: const TextStyle(
+    //                     color: Colors.white,
+    //                     fontWeight: FontWeight.bold,
+    //                     fontSize: 20,
+    //                   ),
+    //                 ),
+    //               ),
+    //             ),
+    //           ),
+    //         );
+    //       },
+    //     ));
   }
 }
